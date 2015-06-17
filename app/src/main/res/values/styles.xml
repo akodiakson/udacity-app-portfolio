@@ -2,10 +2,13 @@
 
     <style name="MyTheme" parent="AppTheme">
         <item name="android:colorPrimary">@color/colorPrimary</item>
+        <item name="android:colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="android:colorAccent">@color/colorAccent</item>
+        <item name="android:windowActionBar">false</item>
     </style>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
     </style>
 
@@ -17,11 +20,10 @@
     </style>
 
     <style name="ButtonStyleFirstFive" parent="ButtonStyle">
-        <item name="android:background">#448aff</item>
-        <item name="android:textColor">#ffffff</item>
+        <item name="android:background">@color/colorPrimary</item>
     </style>
 
     <style name="ButtonStyleCapstone" parent="ButtonStyle">
-        <item name="android:background">#FF4081</item>
+        <item name="android:background">@color/colorAccent</item>
     </style>
 </resources>

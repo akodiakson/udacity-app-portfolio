@@ -1,4 +1,9 @@
 apply plugin: 'com.android.application'
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
+}
 
 android {
     compileSdkVersion 22
@@ -22,4 +27,11 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:22.2.0'
+    compile 'com.android.support:design:22.2.0'
+    //P1 -- Spotify Streamer
+    compile 'com.squareup.picasso:picasso:2.5.2'
+
+    compile(name:'spotify-web-api-android-0.1.0', ext:'aar')
+    compile 'com.squareup.retrofit:retrofit:1.9.0'
+    compile 'com.squareup.okhttp:okhttp:2.2.0'
 }
