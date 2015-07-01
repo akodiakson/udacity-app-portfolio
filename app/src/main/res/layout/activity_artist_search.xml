@@ -13,10 +13,10 @@
 
         <EditText
             android:id="@+id/artistSearchEditText"
-            android:text="kendrick"
+            android:text="@string/demo_artist_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Search for an artist"
+            android:hint="@string/artist_search_hint"
             android:imeOptions="actionGo"
             android:singleLine="true"/>
     </android.support.design.widget.TextInputLayout>

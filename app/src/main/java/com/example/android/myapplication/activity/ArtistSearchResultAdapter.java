@@ -1,18 +1,14 @@
 package com.example.android.myapplication.activity;
 
 import android.content.Context;
-import android.graphics.Outline;
-import android.support.v7.graphics.Palette;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewOutlineProvider;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.android.myapplication.R;
-import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -20,9 +16,6 @@ import java.util.List;
 import kaaes.spotify.webapi.android.models.Artist;
 import kaaes.spotify.webapi.android.models.Image;
 
-/**
- * Created by ace8810 on 6/29/2015.
- */
 public class ArtistSearchResultAdapter extends RecyclerView.Adapter<ArtistSearchResultAdapter.ArtistViewHolder> {
 
     private Context context;
@@ -46,7 +39,7 @@ public class ArtistSearchResultAdapter extends RecyclerView.Adapter<ArtistSearch
         holder.artistName.setText(artist.name);
 
         List<Image> images = artist.images;
-        if(hasImages(images)){
+            if(hasImages(images)){
             Image firstImage = images.get(0);
             Picasso.with(context).load(firstImage.url).resize(firstImage.height, firstImage.height).centerCrop().into(holder.artistImage);
         }
