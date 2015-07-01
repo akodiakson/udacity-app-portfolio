@@ -57,7 +57,7 @@ public class ArtistSearchActivity extends AppCompatActivity implements ArtistSea
                     //TODO -- show on-screen visual to indicate search progress
 
                     //...hide the keyboard
-                    Util.hideKeyboard(new WeakReference<Context>(ArtistSearchActivity.this), v);
+                    KeyboardUtil.hideKeyboard(new WeakReference<Context>(ArtistSearchActivity.this), v);
 
                     return true;
                 }
