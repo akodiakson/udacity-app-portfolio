@@ -31,10 +31,10 @@
 
     <style name="artist_search_result_thumb"></style>
 
-    <style name="item_base_style">
+    <!--<style name="item_base_style">-->
 
 
-    </style>
+    <!--</style>-->
 
     <dimen name="search_result_margin_top">16dp</dimen>
     <dimen name="search_result_margin_bottom">16dp</dimen>

@@ -5,6 +5,8 @@
 
 
     <!-- artist search results -->
-    <dimen name="artist_search_result_image_width">64dp</dimen>
-    <dimen name="artist_search_result_image_height">64dp</dimen>
+    <dimen name="artist_search_result_image_width">56dp</dimen>
+    <dimen name="artist_search_result_image_height">56dp</dimen>
+
+    <dimen name="artist_search_result_image_avatar_dimen">56dp</dimen>
 </resources>

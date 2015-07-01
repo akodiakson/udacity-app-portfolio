@@ -3,10 +3,31 @@
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/artistSearchInputLayout"
+        android:layout_alignParentTop="true"
+        android:layout_margin="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <EditText
+            android:id="@+id/artistSearchEditText"
+            android:text="kendrick"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Search for an artist"
+            android:imeOptions="actionGo"
+            android:singleLine="true"/>
+    </android.support.design.widget.TextInputLayout>
+
     <android.support.v7.widget.RecyclerView
+        android:layout_below="@id/artistSearchInputLayout"
         android:id="@+id/artist_search_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:scrollbars="vertical"
+        >
 
 
     </android.support.v7.widget.RecyclerView>
