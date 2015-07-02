@@ -35,7 +35,7 @@ public class ArtistSearchActivity extends AppCompatActivity implements ArtistSea
 
         final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.artist_search_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new ArtistSearchResultAdapter(this, artists);
+        adapter = new ArtistSearchResultAdapter(artists);
         recyclerView.setAdapter(adapter);
     }
 

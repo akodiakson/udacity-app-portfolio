@@ -25,4 +25,14 @@
         android:layout_gravity="center_horizontal"
         tools:text="Artist Name" />
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/artist_top_tracks_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical"
+        >
+
+
+    </android.support.v7.widget.RecyclerView>
+
 </LinearLayout>

@@ -22,7 +22,7 @@ public class ArtistSearchResultAdapter extends RecyclerView.Adapter<ArtistSearch
     private List<Artist> artistSearchResultList;
     private View itemView;
 
-    public ArtistSearchResultAdapter(Context context, List<Artist> artistSearchResultList) {
+    public ArtistSearchResultAdapter(List<Artist> artistSearchResultList) {
         this.artistSearchResultList = artistSearchResultList;
     }
 
@@ -41,13 +41,19 @@ public class ArtistSearchResultAdapter extends RecyclerView.Adapter<ArtistSearch
         List<Image> images = artist.images;
         Context context = holder.itemView.getContext();
 
-        final Image firstImage = images.get(0);
-        Picasso.with(context)
-                .load(firstImage.url)
-                .resize(firstImage.height, firstImage.height)
-                .centerCrop()
-                .into(holder.artistImage);
+        final Image image;
 
+        if(!images.isEmpty()){
+            Image firstImage = images.get(0);
+            image = firstImage;
+            Picasso.with(context)
+                    .load(firstImage.url)
+                    .resize(firstImage.height, firstImage.height)
+                    .centerCrop()
+                    .into(holder.artistImage);
+        } else {
+            image = new Image();
+        }
 
         //TODO -- Case for no artist images, show the default image
         holder.artistImage.setBackgroundColor(context.getResources().getColor(R.color.black));
@@ -58,8 +64,8 @@ public class ArtistSearchResultAdapter extends RecyclerView.Adapter<ArtistSearch
                 Intent artistTopTracksIntent = new Intent(context, ArtistTopTracksActivity.class);
                 artistTopTracksIntent.putExtra(ArtistTopTracksActivity.EXTRA_ARTIST_ID, artist.id);
                 artistTopTracksIntent.putExtra(ArtistTopTracksActivity.EXTRA_ARTIST_NAME, artist.name);
-                artistTopTracksIntent.putExtra(ArtistTopTracksActivity.EXTRA_ARTIST_IMAGE_URL, firstImage.url);
-                artistTopTracksIntent.putExtra(ArtistTopTracksActivity.EXTRA_ARTIST_IMAGE_RESIZE_WIDTH, firstImage.height);
+                artistTopTracksIntent.putExtra(ArtistTopTracksActivity.EXTRA_ARTIST_IMAGE_URL, image.url);
+                artistTopTracksIntent.putExtra(ArtistTopTracksActivity.EXTRA_ARTIST_IMAGE_RESIZE_WIDTH, image.height);
                 context.startActivity(artistTopTracksIntent);
             }
         });
