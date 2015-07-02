@@ -20,7 +20,6 @@ import kaaes.spotify.webapi.android.models.Image;
 public class ArtistSearchResultAdapter extends RecyclerView.Adapter<ArtistSearchResultAdapter.ArtistViewHolder> {
 
     private List<Artist> artistSearchResultList;
-    private View itemView;
 
     public ArtistSearchResultAdapter(List<Artist> artistSearchResultList) {
         this.artistSearchResultList = artistSearchResultList;
@@ -69,10 +68,6 @@ public class ArtistSearchResultAdapter extends RecyclerView.Adapter<ArtistSearch
                 context.startActivity(artistTopTracksIntent);
             }
         });
-    }
-
-    private boolean hasImages(List<Image> images){
-        return images != null && images.size() > 0;
     }
 
     @Override

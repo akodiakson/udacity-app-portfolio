@@ -28,7 +28,6 @@ public class ArtistTopTracksActivity extends AppCompatActivity implements OnTopT
     public static final String EXTRA_ARTIST_NAME = "EXTRA_ARTIST_NAME";
     public static final String EXTRA_ARTIST_IMAGE_URL = "EXTRA_ARTIST_IMAGE_URL";
     public static final String EXTRA_ARTIST_IMAGE_RESIZE_WIDTH = "EXTRA_ARTIST_IMAGE_RESIZE_WIDTH";
-    public static final String EXTRA_ARTIST_IMAGE_RESIZE_HEIGHT = "EXTRA_ARTIST_IMAGE_RESIZE_HEIGHT";
 
 
     @Override
