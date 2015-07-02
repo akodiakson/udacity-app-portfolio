@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.android.myapplication.R;
 import com.squareup.picasso.Picasso;
@@ -41,19 +40,26 @@ public class ArtistSearchResultAdapter extends RecyclerView.Adapter<ArtistSearch
 
         List<Image> images = artist.images;
         Context context = holder.itemView.getContext();
-        if(hasImages(images)){
-            Image firstImage = images.get(0);
-            Picasso.with(context).load(firstImage.url).resize(firstImage.height, firstImage.height).centerCrop().into(holder.artistImage);
-        }
+
+        final Image firstImage = images.get(0);
+        Picasso.with(context)
+                .load(firstImage.url)
+                .resize(firstImage.height, firstImage.height)
+                .centerCrop()
+                .into(holder.artistImage);
+
 
         //TODO -- Case for no artist images, show the default image
-        holder.artistImage.setBackgroundColor(context.getResources().getColor(R.color.primary_material_dark));
+        holder.artistImage.setBackgroundColor(context.getResources().getColor(R.color.black));
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Context context = v.getContext();
                 Intent artistTopTracksIntent = new Intent(context, ArtistTopTracksActivity.class);
                 artistTopTracksIntent.putExtra(ArtistTopTracksActivity.EXTRA_ARTIST_ID, artist.id);
+                artistTopTracksIntent.putExtra(ArtistTopTracksActivity.EXTRA_ARTIST_NAME, artist.name);
+                artistTopTracksIntent.putExtra(ArtistTopTracksActivity.EXTRA_ARTIST_IMAGE_URL, firstImage.url);
+                artistTopTracksIntent.putExtra(ArtistTopTracksActivity.EXTRA_ARTIST_IMAGE_RESIZE_WIDTH, firstImage.height);
                 context.startActivity(artistTopTracksIntent);
             }
         });
@@ -78,7 +84,7 @@ public class ArtistSearchResultAdapter extends RecyclerView.Adapter<ArtistSearch
             artistImage = (ImageView) artistView.findViewById(R.id.artistImage);
             artistName = (TextView) artistView.findViewById(R.id.artistName);
             artistImage.setClipToOutline(true);
-            artistImage.setOutlineProvider(new CircularOutlineProvider());
+            artistImage.setOutlineProvider(new CircularOutlineProvider(false));
         }
     }
 }

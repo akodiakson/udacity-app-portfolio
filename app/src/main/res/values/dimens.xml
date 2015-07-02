@@ -5,8 +5,8 @@
 
 
     <!-- artist search results -->
-    <dimen name="artist_search_result_image_width">56dp</dimen>
-    <dimen name="artist_search_result_image_height">56dp</dimen>
+    <dimen name="artist_search_result_image_dimen">56dp</dimen>
 
-    <dimen name="artist_search_result_image_avatar_dimen">56dp</dimen>
+    <dimen name="artist_top_tracks_image_dimen">192dp</dimen>
+
 </resources>
