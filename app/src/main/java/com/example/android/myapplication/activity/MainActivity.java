@@ -1,54 +1,58 @@
-package com.example.android.myapplication;
+package com.example.android.myapplication.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.android.myapplication.R;
+
 
 public class MainActivity extends AppCompatActivity {
+
+    private static final String TAG = MainActivity.class.getName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        setupAppLaunchListeners();
+    }
+
+    private void setupAppLaunchListeners() {
         View.OnClickListener appButtonClickListener = getAppButtonClickListener();
         findViewById(R.id.spotifyStreamer).setOnClickListener(appButtonClickListener);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
+        findViewById(R.id.scoresApp).setOnClickListener(appButtonClickListener);
+        findViewById(R.id.libraryApp).setOnClickListener(appButtonClickListener);
+        findViewById(R.id.builtItBigger).setOnClickListener(appButtonClickListener);
+        findViewById(R.id.xyz_reader).setOnClickListener(appButtonClickListener);
+        findViewById(R.id.capstone).setOnClickListener(appButtonClickListener);
     }
 
     private View.OnClickListener getAppButtonClickListener() {
         return new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                String appName = getAppName(v.getId());
-                showToastForApp(appName);
+                Intent appLaunchIntent = getIntent(v.getId());
+                if(appLaunchIntent != null){
+                    //if not null, then launch the implemented app
+                    startActivity(appLaunchIntent);
+                } else{
+                    //otherwise, just show a Toast
+                    String appName = getAppName(v.getId());
+                    showToastForApp(appName);
+                }
             }
         };
+    }
+
+    private Intent getIntent(int id){
+        if(id == R.id.spotifyStreamer){
+            return new Intent(this, ArtistSearchActivity.class);
+        }
+        return null;
     }
 
     /*
@@ -69,9 +73,6 @@ public class MainActivity extends AppCompatActivity {
     private String getAppName(int buttonId) {
         String appName = null;
         switch(buttonId){
-            case R.id.spotifyStreamer:
-                appName = getString(R.string.spotify_streamer);
-                break;
             case R.id.scoresApp:
                 appName = getString(R.string.scores_app);
                 break;
