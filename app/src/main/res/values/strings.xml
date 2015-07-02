@@ -19,4 +19,6 @@
     <!-- messaging -->
     <string name="button_selected_message_prefix">This button will launch my </string>
     <string name="title_activity_artist_search">ArtistSearchActivity</string>
+    <string name="title_activity_artist_top_tracks">ArtistTopTracksActivity</string>
+
 </resources>
