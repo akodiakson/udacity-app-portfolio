@@ -1,4 +1,4 @@
-package com.example.android.myapplication.activity;
+package com.akodiakson.udacity.portfolio.view;
 
 import android.content.Context;
 import android.content.Intent;
@@ -8,9 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.android.myapplication.R;
+import com.akodiakson.udacity.portfolio.R;
+import com.akodiakson.udacity.portfolio.activity.ArtistTopTracksActivity;
+
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -21,9 +22,8 @@ import kaaes.spotify.webapi.android.models.Image;
 public class ArtistSearchResultAdapter extends RecyclerView.Adapter<ArtistSearchResultAdapter.ArtistViewHolder> {
 
     private List<Artist> artistSearchResultList;
-    private View itemView;
 
-    public ArtistSearchResultAdapter(Context context, List<Artist> artistSearchResultList) {
+    public ArtistSearchResultAdapter(List<Artist> artistSearchResultList) {
         this.artistSearchResultList = artistSearchResultList;
     }
 
@@ -41,26 +41,38 @@ public class ArtistSearchResultAdapter extends RecyclerView.Adapter<ArtistSearch
 
         List<Image> images = artist.images;
         Context context = holder.itemView.getContext();
-        if(hasImages(images)){
+
+        final Image image;
+
+        if(!images.isEmpty()){
             Image firstImage = images.get(0);
-            Picasso.with(context).load(firstImage.url).resize(firstImage.height, firstImage.height).centerCrop().into(holder.artistImage);
+            image = firstImage;
+            Picasso.with(context)
+                    .load(firstImage.url)
+                    .resize(firstImage.height, firstImage.height)
+                    .placeholder(R.drawable.ic_music_note_white_24dp)
+                    .centerCrop()
+                    .into(holder.artistImage);
+        } else {
+            holder.artistImage.setColorFilter(0);
+            holder.artistImage.setImageDrawable(holder.itemView.getResources().getDrawable(R.drawable.ic_music_note_white_24dp, null));
+            image = new Image();
         }
 
         //TODO -- Case for no artist images, show the default image
-        holder.artistImage.setBackgroundColor(context.getResources().getColor(R.color.primary_material_dark));
+        holder.artistImage.setBackgroundColor(context.getResources().getColor(R.color.colorLightPrimary));
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Context context = v.getContext();
                 Intent artistTopTracksIntent = new Intent(context, ArtistTopTracksActivity.class);
                 artistTopTracksIntent.putExtra(ArtistTopTracksActivity.EXTRA_ARTIST_ID, artist.id);
+                artistTopTracksIntent.putExtra(ArtistTopTracksActivity.EXTRA_ARTIST_NAME, artist.name);
+                artistTopTracksIntent.putExtra(ArtistTopTracksActivity.EXTRA_ARTIST_IMAGE_URL, image.url);
+                artistTopTracksIntent.putExtra(ArtistTopTracksActivity.EXTRA_ARTIST_IMAGE_RESIZE_WIDTH, image.height);
                 context.startActivity(artistTopTracksIntent);
             }
         });
-    }
-
-    private boolean hasImages(List<Image> images){
-        return images != null && images.size() > 0;
     }
 
     @Override
@@ -78,7 +90,7 @@ public class ArtistSearchResultAdapter extends RecyclerView.Adapter<ArtistSearch
             artistImage = (ImageView) artistView.findViewById(R.id.artistImage);
             artistName = (TextView) artistView.findViewById(R.id.artistName);
             artistImage.setClipToOutline(true);
-            artistImage.setOutlineProvider(new CircularOutlineProvider());
+            artistImage.setOutlineProvider(new CircularOutlineProvider(false));
         }
     }
 }

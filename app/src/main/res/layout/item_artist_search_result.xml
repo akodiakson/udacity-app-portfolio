@@ -10,8 +10,8 @@
         android:id="@+id/artistImage"
         tools:src="@drawable/notification_template_icon_bg"
         android:contentDescription="@string/artist_image_content_description"
-        android:layout_width="@dimen/artist_search_result_image_width"
-        android:layout_height="@dimen/artist_search_result_image_height"
+        android:layout_width="@dimen/artist_search_result_image_dimen"
+        android:layout_height="@dimen/artist_search_result_image_dimen"
         android:layout_margin="@dimen/search_result_margin_top" />
 
     <TextView
@@ -19,7 +19,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
+        style="@android:style/TextAppearance.Material.Body2"
         tools:text="Artist Name" />
-
 
 </LinearLayout>
