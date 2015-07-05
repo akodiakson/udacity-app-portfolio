@@ -16,7 +16,7 @@ public class TopTracksTask extends AsyncTask<String, Void, Tracks>{
     private static final String KEY_SEARCH_COUNTRY = "country";
     private static final String SEARCH_COUNTRY = "US";
 
-    private OnTopTracksResultListener onTopTracksResultListener;
+    private final OnTopTracksResultListener onTopTracksResultListener;
 
     public TopTracksTask(OnTopTracksResultListener onTopTracksResultListener){
         this.onTopTracksResultListener = onTopTracksResultListener;

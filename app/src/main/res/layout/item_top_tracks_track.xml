@@ -23,6 +23,7 @@
             android:id="@+id/trackName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
             style="@android:style/TextAppearance.Material.Body2"
             tools:text="Artist Name" />
 
@@ -30,6 +31,8 @@
             android:id="@+id/trackAlbum"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+
             style="@android:style/TextAppearance.Material.Body1"
             tools:text="Artist Name" />
     </LinearLayout>

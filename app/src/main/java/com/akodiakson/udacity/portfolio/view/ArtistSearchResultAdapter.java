@@ -49,14 +49,17 @@ public class ArtistSearchResultAdapter extends RecyclerView.Adapter<ArtistSearch
             Picasso.with(context)
                     .load(firstImage.url)
                     .resize(firstImage.height, firstImage.height)
+                    .placeholder(R.drawable.ic_music_note_white_24dp)
                     .centerCrop()
                     .into(holder.artistImage);
         } else {
+            holder.artistImage.setColorFilter(0);
+            holder.artistImage.setImageDrawable(holder.itemView.getResources().getDrawable(R.drawable.ic_music_note_white_24dp, null));
             image = new Image();
         }
 
         //TODO -- Case for no artist images, show the default image
-        holder.artistImage.setBackgroundColor(context.getResources().getColor(R.color.black));
+        holder.artistImage.setBackgroundColor(context.getResources().getColor(R.color.colorLightPrimary));
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

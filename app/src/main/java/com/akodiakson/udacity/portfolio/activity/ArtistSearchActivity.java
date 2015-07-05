@@ -4,15 +4,16 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
+import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.android.myapplication.R;
 import com.akodiakson.udacity.portfolio.view.ArtistSearchResultAdapter;
@@ -29,7 +30,7 @@ import kaaes.spotify.webapi.android.models.Pager;
 
 public class ArtistSearchActivity extends AppCompatActivity implements ArtistSearchTaskResultListener {
 
-    public static final String KEY_ARTIST_SEARCH_RESULTS = "KEY_ARTIST_SEARCH_RESULTS";
+    private static final String KEY_ARTIST_SEARCH_RESULTS = "KEY_ARTIST_SEARCH_RESULTS";
     private RecyclerView.Adapter adapter;
     private List<Artist> artists = new ArrayList<>();
     private LinearLayoutManager layoutManager;
@@ -56,16 +57,16 @@ public class ArtistSearchActivity extends AppCompatActivity implements ArtistSea
         artistSearchTermView = (EditText) findViewById(R.id.artistSearchEditText);
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if(listState != null){
-            layoutManager.onRestoreInstanceState(listState);
-        }
-        if(artistSearchTerm != null){
-            artistSearchTermView.setText(artistSearchTerm);
-        }
-    }
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//        if(listState != null){
+//            layoutManager.onRestoreInstanceState(listState);
+//        }
+//        if(artistSearchTerm != null){
+//            artistSearchTermView.setText(artistSearchTerm);
+//        }
+//    }
 
     private void setupSearchView() {
         EditText searchInput = (EditText) findViewById(R.id.artistSearchEditText);
@@ -117,14 +118,24 @@ public class ArtistSearchActivity extends AppCompatActivity implements ArtistSea
 
     @Override
     public void handleArtistSearchTaskResults(ArtistsPager results) {
-        //TODO -- handle the negative case
         Pager<Artist> pager =  results.artists;
         List<Artist> artistsResult = pager.items;
         if(artistsResult == null || artistsResult.isEmpty()){
-            Toast.makeText(this, getString(R.string.error_no_artists_found), Toast.LENGTH_SHORT).show();
+            Snackbar
+                    .make(artistSearchTermView, getString(R.string.error_no_artists_found), Snackbar.LENGTH_LONG)
+                    .setAction("Try again", new RetryTapListener())
+                    .show(); // Don’t forget to show!
         } else {
             artists.addAll(artistsResult);
             adapter.notifyDataSetChanged();
+        }
+    }
+
+    private class RetryTapListener implements View.OnClickListener{
+        @Override
+        public void onClick(View v) {
+            KeyboardUtil.showKeyboard(new WeakReference<Context>(ArtistSearchActivity.this), artistSearchTermView);
+            artistSearchTermView.setText("");
         }
     }
 }

@@ -11,8 +11,6 @@ import com.example.android.myapplication.R;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final String TAG = MainActivity.class.getName();
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,11 +58,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private void showToastForApp(String appName){
         final String EXCLAMATION = "!";
-        StringBuilder message = new StringBuilder();
-        message.append(getString(R.string.button_selected_message_prefix));
-        message.append(appName);
-        message.append(EXCLAMATION);
-        Toast.makeText(this, message.toString(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, getString(R.string.button_selected_message_prefix) + appName + EXCLAMATION, Toast.LENGTH_SHORT).show();
     }
 
     /*
