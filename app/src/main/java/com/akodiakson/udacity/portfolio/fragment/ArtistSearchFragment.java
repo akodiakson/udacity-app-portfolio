@@ -5,9 +5,11 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +21,8 @@ import android.widget.TextView;
 import com.akodiakson.udacity.portfolio.R;
 import com.akodiakson.udacity.portfolio.network.ArtistSearchTask;
 import com.akodiakson.udacity.portfolio.util.KeyboardUtil;
+import com.akodiakson.udacity.portfolio.util.NetworkUtil;
+import com.akodiakson.udacity.portfolio.util.StringUtil;
 import com.akodiakson.udacity.portfolio.view.ArtistSearchResultAdapter;
 
 import java.lang.ref.WeakReference;
@@ -44,8 +48,10 @@ public class ArtistSearchFragment extends Fragment implements ArtistSearchTaskRe
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         fragmentView = inflater.inflate(R.layout.fragment_artist_search, container, false);
-        RecyclerView recyclerView = (RecyclerView) fragmentView.findViewById(R.id.artist_search_recycler_view);
 
+        Toolbar toolbar = (Toolbar) fragmentView.findViewById(R.id.toolbar);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        RecyclerView recyclerView = (RecyclerView) fragmentView.findViewById(R.id.artist_search_recycler_view);
 
         adapter = new ArtistSearchResultAdapter(artists);
 
@@ -80,22 +86,19 @@ public class ArtistSearchFragment extends Fragment implements ArtistSearchTaskRe
                     artists.clear();
                     adapter.notifyDataSetChanged();
 
-                    //ask Spotify for the answer
-                    searchForArtistByInput(artistSearchEditText.getText());
-
-                    //TODO -- show on-screen visual to indicate search progress
-
-                    //...hide the keyboard
-                    KeyboardUtil.hideKeyboard(new WeakReference<Context>(getActivity()), artistSearchEditText);
+                    String searchTerm = artistSearchEditText.getText().toString();
+                    if (StringUtil.isNotEmpty(searchTerm)) {
+                        // Ask Spotify for the answer
+                        searchForArtistByInput(searchTerm);
+                        //...hide the keyboard
+                        KeyboardUtil.hideKeyboard(new WeakReference<Context>(getActivity()), artistSearchEditText);
+                    }
 
                     return true;
                 }
                 return false;
             }
         });
-    }
-    private void searchForArtistByInput(@NonNull CharSequence text) {
-        new ArtistSearchTask(this).execute(text.toString());
     }
 
     @Override
@@ -105,7 +108,7 @@ public class ArtistSearchFragment extends Fragment implements ArtistSearchTaskRe
         if(artistsResult == null || artistsResult.isEmpty()){
             Snackbar
                     .make(fragmentView, getString(R.string.error_no_artists_found), Snackbar.LENGTH_LONG)
-                    .setAction(getString(R.string.action_try_again), new RetryTapListener())
+                    .setAction(getString(R.string.action_try_again), new RetryEntryTapListener())
                     .show();
         } else {
             artists.addAll(artistsResult);
@@ -113,12 +116,32 @@ public class ArtistSearchFragment extends Fragment implements ArtistSearchTaskRe
         }
     }
 
-    private class RetryTapListener implements View.OnClickListener{
+    private void searchForArtistByInput(@NonNull CharSequence text) {
+        if(NetworkUtil.isNetworkAvailable(new WeakReference<Context>(getActivity()))){
+            new ArtistSearchTask(this).execute(text.toString());
+        } else {
+            Snackbar
+                    .make(fragmentView.findViewById(R.id.toolbar), getString(R.string.error_no_connectivity), Snackbar.LENGTH_LONG)
+                    .setAction(getString(R.string.action_try_again), new RetrySearchForConnectivityIssueListener())
+                    .show();
+        }
+    }
+
+    //For cases where a network connection was unavailble, keep the search term, just try to search again
+    private class RetrySearchForConnectivityIssueListener implements View.OnClickListener{
+        @Override
+        public void onClick(View v) {
+            searchForArtistByInput(((EditText) fragmentView.findViewById(R.id.artistSearchEditText)).getText().toString());
+        }
+    }
+
+    //For cases where there was invalid input or no search results for that input.
+    private class RetryEntryTapListener implements View.OnClickListener{
         @Override
         public void onClick(View v) {
             TextView searchTextEdit = (TextView) fragmentView.findViewById(R.id.artistSearchEditText);
             KeyboardUtil.showKeyboard(new WeakReference<Context>(getActivity()), searchTextEdit);
-            searchTextEdit.setText("");
+            searchTextEdit.setText(null);
         }
     }
 }

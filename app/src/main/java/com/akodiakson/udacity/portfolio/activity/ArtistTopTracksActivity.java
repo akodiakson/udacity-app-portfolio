@@ -1,24 +1,32 @@
 package com.akodiakson.udacity.portfolio.activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.graphics.Palette;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.akodiakson.udacity.portfolio.R;
 import com.akodiakson.udacity.portfolio.util.DimensUtil;
+import com.akodiakson.udacity.portfolio.util.NetworkUtil;
 import com.akodiakson.udacity.portfolio.util.StringUtil;
 
 import com.akodiakson.udacity.portfolio.view.ArtistTopTracksAdapter;
 import com.akodiakson.udacity.portfolio.view.CircularOutlineProvider;
 import com.akodiakson.udacity.portfolio.network.TopTracksTask;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +44,7 @@ public class ArtistTopTracksActivity extends AppCompatActivity implements OnTopT
     public static final String EXTRA_ARTIST_IMAGE_URL = "EXTRA_ARTIST_IMAGE_URL";
     public static final String EXTRA_ARTIST_IMAGE_RESIZE_WIDTH = "EXTRA_ARTIST_IMAGE_RESIZE_WIDTH";
 
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,8 +58,10 @@ public class ArtistTopTracksActivity extends AppCompatActivity implements OnTopT
         final int artistImageResizeWidth = intent.getIntExtra(EXTRA_ARTIST_IMAGE_RESIZE_WIDTH, 0);
         final int artistImageResizeHeight = intent.getIntExtra(EXTRA_ARTIST_IMAGE_RESIZE_WIDTH, 0);
 
-        TextView artistNameView = (TextView) findViewById(R.id.artistNameTopTracks);
-        artistNameView.setText(artistName);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle(artistName);
 
         showArtistImage(artistImageURL, artistImageResizeWidth, artistImageResizeHeight);
 
@@ -63,7 +74,14 @@ public class ArtistTopTracksActivity extends AppCompatActivity implements OnTopT
     }
 
     private void searchArtistTopTracks(String artistId) {
-        new TopTracksTask(this).execute(artistId);
+        if(NetworkUtil.isNetworkAvailable(new WeakReference<Context>(this))){
+            new TopTracksTask(this).execute(artistId);
+        } else {
+            Snackbar
+                    .make(findViewById(R.id.toolbar), getString(R.string.error_no_connectivity), Snackbar.LENGTH_LONG)
+                    .show();
+        }
+
     }
 
     private void showArtistImage(String artistImageURL, int artistImageResizeWidth, int intartistImageResizeHeight ) {
@@ -79,12 +97,23 @@ public class ArtistTopTracksActivity extends AppCompatActivity implements OnTopT
         imageView.setClipToOutline(true);
         imageView.setBackgroundColor(getResources().getColor(R.color.colorDividerColor));
         imageView.setOutlineProvider(new CircularOutlineProvider(true));
+        Callback callback = new Callback.EmptyCallback(){
+            @Override
+            public void onSuccess() {
+                super.onSuccess();
+                Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap(); // Ew!
+                Palette palette = Palette.from(bitmap).generate();
+                toolbar.setBackgroundColor(palette.getVibrantColor(R.color.colorPrimaryText));
+                toolbar.setTitleTextColor(palette.getLightVibrantColor(R.color.white));
+            }
+        };
         Picasso.with(this)
                 .load(artistImageURL)
                 .placeholder(R.drawable.ic_music_note_white_24dp)
                 .centerCrop()
                 .resize(artistImageResizeWidth, intartistImageResizeHeight)
-                .into(imageView);
+                .into(imageView, callback);
+
     }
 
     @Override
@@ -92,8 +121,8 @@ public class ArtistTopTracksActivity extends AppCompatActivity implements OnTopT
         List<Track> tracksList = tracks.tracks;
         if(tracksList == null || tracksList.isEmpty()){
             Snackbar
-                    .make(findViewById(R.id.artistNameTopTracks), getString(R.string.error_no_top_tracks), Snackbar.LENGTH_LONG)
-                    .show(); // Don’t forget to show!
+                    .make(findViewById(R.id.toolbar), getString(R.string.error_no_top_tracks), Snackbar.LENGTH_LONG)
+                    .show();
             return;
         }
         topTracks.addAll(tracksList);

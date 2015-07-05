@@ -22,5 +22,6 @@
     <string name="title_activity_artist_top_tracks">Top Tracks</string>
     <string name="action_try_again">Try again</string>
     <string name="error_no_top_tracks">This artist has no top tracks</string>
+    <string name="error_no_connectivity">You have no Internet connectivity</string>
 
 </resources>
