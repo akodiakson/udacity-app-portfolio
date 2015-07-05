@@ -19,6 +19,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
+        style="@android:style/TextAppearance.Material.Body2"
         tools:text="Artist Name" />
 
 

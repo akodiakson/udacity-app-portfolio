@@ -33,6 +33,7 @@
 
     <!--</style>-->
 
+    <dimen name="top_tracks_artist_image_margin">32dp</dimen>
     <dimen name="search_result_margin_top">16dp</dimen>
     <dimen name="search_result_margin_bottom">16dp</dimen>
 </resources>

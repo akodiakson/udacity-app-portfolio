@@ -5,12 +5,14 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.android.myapplication.R;
 import com.akodiakson.udacity.portfolio.view.ArtistSearchResultAdapter;
@@ -47,7 +49,7 @@ public class ArtistSearchActivity extends AppCompatActivity implements ArtistSea
         adapter = new ArtistSearchResultAdapter(artists);
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.artist_search_recycler_view);
-        layoutManager = new LinearLayoutManager(this);
+        layoutManager = new GridLayoutManager(this, 2);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
 
@@ -118,7 +120,11 @@ public class ArtistSearchActivity extends AppCompatActivity implements ArtistSea
         //TODO -- handle the negative case
         Pager<Artist> pager =  results.artists;
         List<Artist> artistsResult = pager.items;
-        artists.addAll(artistsResult);
-        adapter.notifyDataSetChanged();
+        if(artistsResult == null || artistsResult.isEmpty()){
+            Toast.makeText(this, getString(R.string.error_no_artists_found), Toast.LENGTH_SHORT).show();
+        } else {
+            artists.addAll(artistsResult);
+            adapter.notifyDataSetChanged();
+        }
     }
 }

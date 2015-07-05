@@ -7,6 +7,8 @@
     <!-- artist search results -->
     <dimen name="artist_search_result_image_dimen">56dp</dimen>
 
+    <dimen name="album_cover_dimen">64dp</dimen>
+
     <dimen name="artist_top_tracks_image_dimen">192dp</dimen>
 
 </resources>

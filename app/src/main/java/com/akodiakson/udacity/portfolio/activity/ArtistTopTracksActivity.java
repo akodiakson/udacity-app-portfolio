@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -18,6 +19,8 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
+import kaaes.spotify.webapi.android.models.Artist;
+import kaaes.spotify.webapi.android.models.Pager;
 import kaaes.spotify.webapi.android.models.Track;
 import kaaes.spotify.webapi.android.models.Tracks;
 
@@ -51,7 +54,7 @@ public class ArtistTopTracksActivity extends AppCompatActivity implements OnTopT
         showArtistImage(artistImageURL, artistImageResizeWidth, artistImageResizeHeight);
 
         RecyclerView topTracksView = (RecyclerView)findViewById(R.id.artist_top_tracks_recycler_view);
-        topTracksView.setLayoutManager(new GridLayoutManager(this, 2));
+        topTracksView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new ArtistTopTracksAdapter(topTracks);
         topTracksView.setAdapter(adapter);
 
@@ -76,6 +79,7 @@ public class ArtistTopTracksActivity extends AppCompatActivity implements OnTopT
 
     @Override
     public void onTracksObtained(Tracks tracks) {
-        Toast.makeText(this, "tracks obtained", Toast.LENGTH_SHORT).show();
+        topTracks.addAll(tracks.tracks);
+        adapter.notifyDataSetChanged();
     }
 }

@@ -3,6 +3,7 @@
     package="com.example.android.myapplication" >
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <!-- TODO - Remove for prod build. Needed only for Leak Canary. -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
