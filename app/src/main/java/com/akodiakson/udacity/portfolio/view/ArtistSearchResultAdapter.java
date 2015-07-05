@@ -59,7 +59,6 @@ public class ArtistSearchResultAdapter extends RecyclerView.Adapter<ArtistSearch
             image = new Image();
         }
 
-        //TODO -- Case for no artist images, show the default image
         holder.artistImage.setBackgroundColor(context.getResources().getColor(R.color.colorLightPrimary));
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
