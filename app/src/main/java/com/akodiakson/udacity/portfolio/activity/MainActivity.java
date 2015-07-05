@@ -1,4 +1,4 @@
-package com.example.android.myapplication.activity;
+package com.akodiakson.udacity.portfolio.activity;
 
 import android.content.Intent;
 import android.os.Bundle;

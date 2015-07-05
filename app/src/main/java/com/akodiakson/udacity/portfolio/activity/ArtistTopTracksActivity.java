@@ -1,4 +1,4 @@
-package com.example.android.myapplication.activity;
+package com.akodiakson.udacity.portfolio.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +10,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.myapplication.R;
+import com.akodiakson.udacity.portfolio.view.ArtistTopTracksAdapter;
+import com.akodiakson.udacity.portfolio.view.CircularOutlineProvider;
+import com.akodiakson.udacity.portfolio.network.TopTracksTask;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

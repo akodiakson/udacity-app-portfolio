@@ -1,4 +1,4 @@
-package com.example.android.myapplication.activity;
+package com.akodiakson.udacity.portfolio.view;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.akodiakson.udacity.portfolio.activity.ArtistTopTracksActivity;
 import com.example.android.myapplication.R;
 import com.squareup.picasso.Picasso;
 

@@ -1,4 +1,4 @@
-package com.example.android.myapplication.activity;
+package com.akodiakson.udacity.portfolio.view;
 
 import android.graphics.Outline;
 import android.view.View;
