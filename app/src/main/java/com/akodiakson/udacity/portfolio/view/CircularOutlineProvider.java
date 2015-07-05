@@ -4,7 +4,8 @@ import android.graphics.Outline;
 import android.view.View;
 import android.view.ViewOutlineProvider;
 
-import com.example.android.myapplication.R;
+import com.akodiakson.udacity.portfolio.R;
+
 
 /*
 Based on this example: https://github.com/googlesamples/android-topeka/blob/master/app/src/main/java/com/google/samples/apps/topeka/widget/outlineprovider/RoundOutlineProvider.java#L9

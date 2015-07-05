@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.android.myapplication.R;
+import com.akodiakson.udacity.portfolio.R;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 

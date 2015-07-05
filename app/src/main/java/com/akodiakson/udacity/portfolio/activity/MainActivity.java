@@ -6,8 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Toast;
 
-import com.example.android.myapplication.R;
-
+import com.akodiakson.udacity.portfolio.R;
 
 public class MainActivity extends AppCompatActivity {
 

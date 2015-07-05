@@ -3,7 +3,7 @@ package com.akodiakson.udacity.portfolio.activity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-import com.example.android.myapplication.R;
+import com.akodiakson.udacity.portfolio.R;
 
 public class ArtistSearchActivity extends AppCompatActivity {
 

@@ -16,10 +16,10 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.akodiakson.udacity.portfolio.R;
 import com.akodiakson.udacity.portfolio.network.ArtistSearchTask;
 import com.akodiakson.udacity.portfolio.util.KeyboardUtil;
 import com.akodiakson.udacity.portfolio.view.ArtistSearchResultAdapter;
-import com.example.android.myapplication.R;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -29,9 +29,6 @@ import kaaes.spotify.webapi.android.models.Artist;
 import kaaes.spotify.webapi.android.models.ArtistsPager;
 import kaaes.spotify.webapi.android.models.Pager;
 
-/**
- * A placeholder fragment containing a simple view.
- */
 public class ArtistSearchFragment extends Fragment implements ArtistSearchTaskResultListener {
 
     public static final int GRID_VIEW_SPAN_COUNT = 2;

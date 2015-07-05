@@ -10,9 +10,10 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.akodiakson.udacity.portfolio.R;
 import com.akodiakson.udacity.portfolio.util.DimensUtil;
 import com.akodiakson.udacity.portfolio.util.StringUtil;
-import com.example.android.myapplication.R;
+
 import com.akodiakson.udacity.portfolio.view.ArtistTopTracksAdapter;
 import com.akodiakson.udacity.portfolio.view.CircularOutlineProvider;
 import com.akodiakson.udacity.portfolio.network.TopTracksTask;

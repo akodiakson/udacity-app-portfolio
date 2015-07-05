@@ -9,8 +9,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.akodiakson.udacity.portfolio.R;
 import com.akodiakson.udacity.portfolio.activity.ArtistTopTracksActivity;
-import com.example.android.myapplication.R;
+
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
