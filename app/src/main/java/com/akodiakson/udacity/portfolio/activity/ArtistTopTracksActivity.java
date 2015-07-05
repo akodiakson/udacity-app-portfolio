@@ -100,6 +100,7 @@ public class ArtistTopTracksActivity extends AppCompatActivity implements OnTopT
             @Override
             public void onSuccess() {
                 super.onSuccess();
+                //Source: http://jakewharton.com/coercing-picasso-to-play-with-palette/
                 Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap(); // Ew!
                 Palette palette = Palette.from(bitmap).generate();
                 toolbar.setBackgroundColor(palette.getVibrantColor(R.color.colorPrimaryText));
