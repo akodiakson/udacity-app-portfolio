@@ -2,7 +2,7 @@ package com.akodiakson.udacity.portfolio.network;
 
 import android.os.AsyncTask;
 
-import com.akodiakson.udacity.portfolio.activity.ArtistSearchTaskResultListener;
+import com.akodiakson.udacity.portfolio.fragment.ArtistSearchTaskResultListener;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -20,7 +20,7 @@
     <string name="button_selected_message_prefix">This button will launch my </string>
     <string name="title_activity_artist_search">Artist Search</string>
     <string name="title_activity_artist_top_tracks">Top Tracks</string>
-    <string name="action_settings">Settings</string>
     <string name="action_try_again">Try again</string>
+    <string name="error_no_top_tracks">This artist has no top tracks</string>
 
 </resources>

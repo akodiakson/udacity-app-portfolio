@@ -26,6 +26,7 @@
         android:id="@+id/artist_search_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
         android:scrollbars="vertical"/>
 
 </LinearLayout>

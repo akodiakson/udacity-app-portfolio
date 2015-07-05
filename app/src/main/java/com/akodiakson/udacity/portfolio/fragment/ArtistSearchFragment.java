@@ -16,7 +16,6 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.akodiakson.udacity.portfolio.activity.ArtistSearchTaskResultListener;
 import com.akodiakson.udacity.portfolio.network.ArtistSearchTask;
 import com.akodiakson.udacity.portfolio.util.KeyboardUtil;
 import com.akodiakson.udacity.portfolio.view.ArtistSearchResultAdapter;

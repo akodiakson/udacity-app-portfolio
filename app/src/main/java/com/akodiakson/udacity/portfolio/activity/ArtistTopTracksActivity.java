@@ -69,14 +69,14 @@ public class ArtistTopTracksActivity extends AppCompatActivity implements OnTopT
 
         if(StringUtil.isEmpty(artistImageURL)
                 || DimensUtil.isInvalidImageDimensPair(artistImageResizeWidth, intartistImageResizeHeight)){
-            final ImageView imageView = (ImageView) findViewById(R.id.artistImageTopTracks);
-            imageView.setVisibility(View.GONE);
+            // Hide the artist image if there aren't any images.
+            findViewById(R.id.artistImageTopTracks).setVisibility(View.GONE);
             return;
         }
 
         final ImageView imageView = (ImageView) findViewById(R.id.artistImageTopTracks);
         imageView.setClipToOutline(true);
-        imageView.setBackgroundColor(getResources().getColor(R.color.black));
+        imageView.setBackgroundColor(getResources().getColor(R.color.colorDividerColor));
         imageView.setOutlineProvider(new CircularOutlineProvider(true));
         Picasso.with(this)
                 .load(artistImageURL)
@@ -91,7 +91,7 @@ public class ArtistTopTracksActivity extends AppCompatActivity implements OnTopT
         List<Track> tracksList = tracks.tracks;
         if(tracksList == null || tracksList.isEmpty()){
             Snackbar
-                    .make(findViewById(R.id.artistNameTopTracks), "This artist has no top tracks", Snackbar.LENGTH_LONG)
+                    .make(findViewById(R.id.artistNameTopTracks), getString(R.string.error_no_top_tracks), Snackbar.LENGTH_LONG)
                     .show(); // Don’t forget to show!
             return;
         }
