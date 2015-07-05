@@ -21,19 +21,18 @@
 
         <TextView
             android:id="@+id/trackName"
+            style="@android:style/TextAppearance.Material.Body2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
-            style="@android:style/TextAppearance.Material.Body2"
             tools:text="Artist Name" />
 
         <TextView
             android:id="@+id/trackAlbum"
+            style="@android:style/TextAppearance.Material.Body1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
-
-            style="@android:style/TextAppearance.Material.Body1"
             tools:text="Artist Name" />
     </LinearLayout>
 

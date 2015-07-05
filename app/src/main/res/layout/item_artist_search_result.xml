@@ -22,5 +22,4 @@
         style="@android:style/TextAppearance.Material.Body2"
         tools:text="Artist Name" />
 
-
 </LinearLayout>

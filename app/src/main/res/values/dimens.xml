@@ -3,12 +3,13 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
-
     <!-- artist search results -->
+    <dimen name="artist_search_edit_text_margin">16dp</dimen>
     <dimen name="artist_search_result_image_dimen">56dp</dimen>
 
+    <!-- top tracks -->
     <dimen name="album_cover_dimen">64dp</dimen>
-
     <dimen name="artist_top_tracks_image_dimen">192dp</dimen>
-
+    <dimen name="toolbar_artist_name_offset">96dp</dimen>
+    <dimen name="top_tracks_recycler_view_margin">8dp</dimen>
 </resources>
