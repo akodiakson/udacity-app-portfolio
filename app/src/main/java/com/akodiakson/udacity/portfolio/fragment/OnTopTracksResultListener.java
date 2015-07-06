@@ -1,4 +1,4 @@
-package com.akodiakson.udacity.portfolio.activity;
+package com.akodiakson.udacity.portfolio.fragment;
 
 import kaaes.spotify.webapi.android.models.Tracks;
 

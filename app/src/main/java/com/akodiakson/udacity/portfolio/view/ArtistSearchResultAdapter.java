@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.akodiakson.udacity.portfolio.R;
 import com.akodiakson.udacity.portfolio.activity.ArtistTopTracksActivity;
 
+import com.akodiakson.udacity.portfolio.fragment.TopTracksFragment;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -65,10 +66,10 @@ public class ArtistSearchResultAdapter extends RecyclerView.Adapter<ArtistSearch
             public void onClick(View v) {
                 Context context = v.getContext();
                 Intent artistTopTracksIntent = new Intent(context, ArtistTopTracksActivity.class);
-                artistTopTracksIntent.putExtra(ArtistTopTracksActivity.EXTRA_ARTIST_ID, artist.id);
-                artistTopTracksIntent.putExtra(ArtistTopTracksActivity.EXTRA_ARTIST_NAME, artist.name);
-                artistTopTracksIntent.putExtra(ArtistTopTracksActivity.EXTRA_ARTIST_IMAGE_URL, image.url);
-                artistTopTracksIntent.putExtra(ArtistTopTracksActivity.EXTRA_ARTIST_IMAGE_RESIZE_WIDTH, image.height);
+                artistTopTracksIntent.putExtra(TopTracksFragment.EXTRA_ARTIST_ID, artist.id);
+                artistTopTracksIntent.putExtra(TopTracksFragment.EXTRA_ARTIST_NAME, artist.name);
+                artistTopTracksIntent.putExtra(TopTracksFragment.EXTRA_ARTIST_IMAGE_URL, image.url);
+                artistTopTracksIntent.putExtra(TopTracksFragment.EXTRA_ARTIST_IMAGE_RESIZE_WIDTH, image.height);
                 context.startActivity(artistTopTracksIntent);
             }
         });

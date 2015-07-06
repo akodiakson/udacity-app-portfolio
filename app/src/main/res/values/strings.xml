@@ -24,4 +24,7 @@
     <string name="error_no_top_tracks">This artist has no top tracks</string>
     <string name="error_no_connectivity">You have no Internet connectivity</string>
 
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>

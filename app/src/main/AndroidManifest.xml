@@ -25,7 +25,7 @@
         </activity>
         <activity
             android:name="com.akodiakson.udacity.portfolio.activity.ArtistSearchActivity"
-            android:label="@string/title_activity_artist_search"></activity>
+            android:label="@string/title_activity_artist_search"/>
         <activity
             android:name="com.akodiakson.udacity.portfolio.activity.ArtistTopTracksActivity"
             android:label="@string/title_activity_artist_top_tracks"
