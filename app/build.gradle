@@ -39,5 +39,4 @@ dependencies {
     compile 'com.squareup.retrofit:retrofit:1.9.0'
     compile 'com.squareup.okhttp:okhttp:2.2.0'
     compile 'com.android.support:support-v4:22.2.0'
-    compile "org.parceler:parceler-api:1.0.2"
 }
