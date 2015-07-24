@@ -5,8 +5,10 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
     <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="64dp"
+        android:layout_width="240dp"
+        android:layout_height="240dp" />
 
     <!--artist name-->
     <!--album name-->
