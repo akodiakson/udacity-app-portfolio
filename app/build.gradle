@@ -26,16 +26,18 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:22.2.0'
-    compile 'com.android.support:design:22.2.0'
-    compile 'com.android.support:recyclerview-v7:22.2.0'
     //P1 -- Spotify Streamer
-    compile 'com.squareup.picasso:picasso:2.5.2'
-    compile 'com.android.support:palette-v7:22.2.0'
-    compile(name:'spotify-web-api-android-0.1.0', ext:'aar')
-    compile 'com.squareup.retrofit:retrofit:1.9.0'
-    compile 'com.squareup.okhttp:okhttp:2.2.0'
+    compile(name: 'spotify-web-api-android-0.1.0', ext: 'aar')
 
 //    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.3.1'
 //    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.3.1'
+    compile 'com.android.support:appcompat-v7:22.2.0'
+    compile 'com.android.support:design:22.2.0'
+    compile 'com.android.support:recyclerview-v7:22.2.0'
+    compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'com.android.support:palette-v7:22.2.0'
+    compile 'com.squareup.retrofit:retrofit:1.9.0'
+    compile 'com.squareup.okhttp:okhttp:2.2.0'
+    compile 'com.android.support:support-v4:22.2.0'
+    compile "org.parceler:parceler-api:1.0.2"
 }
