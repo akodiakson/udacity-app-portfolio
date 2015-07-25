@@ -19,6 +19,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.akodiakson.udacity.portfolio.R;
+import com.akodiakson.udacity.portfolio.activity.ArtistSearchActivity;
+import com.akodiakson.udacity.portfolio.model.SpotifyArtistModel;
 import com.akodiakson.udacity.portfolio.network.ArtistSearchTask;
 import com.akodiakson.udacity.portfolio.util.KeyboardUtil;
 import com.akodiakson.udacity.portfolio.util.NetworkUtil;
@@ -41,6 +43,18 @@ public class ArtistSearchFragment extends Fragment implements ArtistSearchTaskRe
 
     private View fragmentView;
 
+    /**
+     * A callback interface that all activities containing this fragment must
+     * implement. This mechanism allows activities to be notified of item
+     * selections.
+     */
+    public interface Callbacks {
+        /**
+         * Callback for when an item has been selected.
+         */
+        public void onArtistSelected(SpotifyArtistModel spotifyArtistModel);
+    }
+
     public ArtistSearchFragment() {
     }
 
@@ -53,9 +67,9 @@ public class ArtistSearchFragment extends Fragment implements ArtistSearchTaskRe
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         RecyclerView recyclerView = (RecyclerView) fragmentView.findViewById(R.id.artist_search_recycler_view);
 
-        adapter = new ArtistSearchResultAdapter(artists);
+        adapter = new ArtistSearchResultAdapter((ArtistSearchActivity)getActivity(), artists);
 
-        LinearLayoutManager layoutManager = new GridLayoutManager(getActivity(), GRID_VIEW_SPAN_COUNT);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
         return fragmentView;

@@ -20,7 +20,7 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/trackName"
+            android:id="@+id/playback_track_name"
             style="@android:style/TextAppearance.Material.Body2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -28,7 +28,7 @@
             tools:text="Artist Name" />
 
         <TextView
-            android:id="@+id/trackAlbum"
+            android:id="@+id/playback_track_album_name"
             style="@android:style/TextAppearance.Material.Body1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
