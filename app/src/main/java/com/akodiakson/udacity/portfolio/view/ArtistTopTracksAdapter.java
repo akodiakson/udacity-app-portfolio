@@ -1,6 +1,5 @@
 package com.akodiakson.udacity.portfolio.view;
 
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.support.annotation.NonNull;
@@ -89,7 +88,7 @@ public class ArtistTopTracksAdapter extends RecyclerView.Adapter<ArtistTopTracks
             super(trackView);
             containerView = trackView;
             artThumbnail = (ImageView) trackView.findViewById(R.id.trackImage);
-            trackName = (TextView) trackView.findViewById(R.id.playback_track_name);
+            trackName = (TextView) trackView.findViewById(R.id.playback_artist_name);
             albumName = (TextView) trackView.findViewById(R.id.playback_track_album_name);
         }
     }
