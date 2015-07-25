@@ -52,7 +52,7 @@ public class ArtistSearchFragment extends Fragment implements ArtistSearchTaskRe
         /**
          * Callback for when an item has been selected.
          */
-        public void onItemSelected(SpotifyArtistModel spotifyArtistModel);
+        public void onArtistSelected(SpotifyArtistModel spotifyArtistModel);
     }
 
     public ArtistSearchFragment() {

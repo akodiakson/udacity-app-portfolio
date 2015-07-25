@@ -11,9 +11,6 @@ import com.akodiakson.udacity.portfolio.fragment.ArtistSearchFragment;
 import com.akodiakson.udacity.portfolio.fragment.TopTracksFragment;
 import com.akodiakson.udacity.portfolio.model.SpotifyArtistModel;
 
-import org.parceler.Parcel;
-import org.parceler.Parcels;
-
 public class ArtistSearchActivity extends AppCompatActivity implements ArtistSearchFragment.Callbacks  {
 
     private boolean mTwoPane;
@@ -42,7 +39,7 @@ public class ArtistSearchActivity extends AppCompatActivity implements ArtistSea
     }
 
     @Override
-    public void onItemSelected(SpotifyArtistModel spotifyArtistModel) {
+    public void onArtistSelected(SpotifyArtistModel spotifyArtistModel) {
         if (mTwoPane) {
             // In two-pane mode, show the detail view in this activity by
             // adding or replacing the detail fragment using a

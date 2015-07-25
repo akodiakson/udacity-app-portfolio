@@ -1,5 +1,6 @@
 package com.akodiakson.udacity.portfolio.view;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.support.annotation.NonNull;
@@ -12,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.akodiakson.udacity.portfolio.R;
+import com.akodiakson.udacity.portfolio.fragment.TopTracksFragment;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -21,8 +23,11 @@ import kaaes.spotify.webapi.android.models.Track;
 
 public class ArtistTopTracksAdapter extends RecyclerView.Adapter<ArtistTopTracksAdapter.TopTrackViewHolder> {
 
+    private TopTracksFragment.Callbacks callbacks;
+
     private List<Track> topTracks;
-    public ArtistTopTracksAdapter(@NonNull List<Track> topTracks) {
+    public ArtistTopTracksAdapter(TopTracksFragment.Callbacks callbacks, @NonNull List<Track> topTracks) {
+        this.callbacks = callbacks;
         this.topTracks = topTracks;
     }
 
@@ -44,7 +49,6 @@ public class ArtistTopTracksAdapter extends RecyclerView.Adapter<ArtistTopTracks
                 Palette palette = Palette.from(bitmap).generate();
                 holder.trackName.setTextColor(palette.getDarkVibrantColor(R.color.colorPrimaryText));
                 holder.albumName.setTextColor(palette.getDarkMutedColor(R.color.colorPrimaryText));
-
             }
 
             @Override
@@ -55,6 +59,13 @@ public class ArtistTopTracksAdapter extends RecyclerView.Adapter<ArtistTopTracks
         Picasso.with(holder.itemView.getContext())
                 .load(track.album.images.get(0).url)
                 .into(holder.artThumbnail, callback);
+
+        holder.containerView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                callbacks.onArtistTrackSelectedForPlayback(track);
+            }
+        });
 
     }
 
@@ -68,15 +79,18 @@ public class ArtistTopTracksAdapter extends RecyclerView.Adapter<ArtistTopTracks
 
     public static class TopTrackViewHolder extends RecyclerView.ViewHolder {
 
+        public View containerView;
+
         public ImageView artThumbnail;
         public TextView trackName;
         public TextView albumName;
 
         public TopTrackViewHolder(View trackView){
             super(trackView);
+            containerView = trackView;
             artThumbnail = (ImageView) trackView.findViewById(R.id.trackImage);
-            trackName = (TextView) trackView.findViewById(R.id.trackName);
-            albumName = (TextView) trackView.findViewById(R.id.trackAlbum);
+            trackName = (TextView) trackView.findViewById(R.id.playback_track_name);
+            albumName = (TextView) trackView.findViewById(R.id.playback_track_album_name);
         }
     }
 }

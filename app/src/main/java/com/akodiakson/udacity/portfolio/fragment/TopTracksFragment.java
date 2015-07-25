@@ -22,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.akodiakson.udacity.portfolio.R;
+import com.akodiakson.udacity.portfolio.activity.ArtistTopTracksActivity;
 import com.akodiakson.udacity.portfolio.model.SpotifyArtistModel;
 import com.akodiakson.udacity.portfolio.network.TopTracksTask;
 import com.akodiakson.udacity.portfolio.util.DimensUtil;
@@ -47,20 +48,17 @@ public class TopTracksFragment extends Fragment implements OnTopTracksResultList
 
     private List<Track> topTracks = new ArrayList<>();
 
-//    public static final String EXTRA_ARTIST_ID = "EXTRA_ARTIST_ID";
-//    public static final String EXTRA_ARTIST_NAME = "EXTRA_ARTIST_NAME";
-//    public static final String EXTRA_ARTIST_IMAGE_URL = "EXTRA_ARTIST_IMAGE_URL";
-//    public static final String EXTRA_ARTIST_IMAGE_RESIZE_WIDTH = "EXTRA_ARTIST_IMAGE_RESIZE_WIDTH";
-
-//    private String artistId;
-//    private String artistName;
-//    private String artistImageURL;
-//    private int artistImageResizeWidth;
-//    private int artistImageResizeHeight;
-
     private Toolbar toolbar;
 
     private SpotifyArtistModel spotifyArtistModel;
+
+    //TODO -- this should pass song-related info
+    public interface Callbacks {
+        /**
+         * Callback for when an item has been selected.
+         */
+        public void onArtistTrackSelectedForPlayback(Track spotifyArtistModel);
+    }
 
     public TopTracksFragment() {
         // Required empty public constructor
@@ -114,7 +112,7 @@ public class TopTracksFragment extends Fragment implements OnTopTracksResultList
     private void setupTopTracksList() {
         RecyclerView topTracksView = (RecyclerView) getView().findViewById(R.id.artist_top_tracks_recycler_view);
         topTracksView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        adapter = new ArtistTopTracksAdapter(topTracks);
+        adapter = new ArtistTopTracksAdapter((ArtistTopTracksActivity)getActivity(), topTracks);
         topTracksView.setAdapter(adapter);
     }
 

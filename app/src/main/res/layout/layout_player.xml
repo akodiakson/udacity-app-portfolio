@@ -4,52 +4,49 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-    <ImageView
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="64dp"
-        android:layout_width="240dp"
-        android:layout_height="240dp" />
 
-    <!--artist name-->
-    <!--album name-->
-    <!--album artwork-->
-    <!--track name-->
-    <!--track duration-->
+    <ImageView
+        android:id="@+id/playback_album_cover"
+        android:layout_width="240dp"
+        android:layout_height="240dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="64dp" />
 
     <LinearLayout
-        android:gravity="center_horizontal"
-        android:orientation="vertical"
-        android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
 
         <LinearLayout
-            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
             android:layout_marginTop="24dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/trackName"
-            style="@android:style/TextAppearance.Material.Body2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="2dp"
-            tools:text="Atlas" />
+            <TextView
+                android:id="@+id/playback_track_name"
+                style="@android:style/TextAppearance.Material.Body2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="2dp"
+                tools:text="Atlas" />
 
-        <TextView
-            android:id="@+id/trackAlbum"
-            style="@android:style/TextAppearance.Material.Caption"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="2dp"
-            android:layout_marginEnd="16dp"
-            tools:text="Battles" />
+            <TextView
+                android:id="@+id/playback_track_album_name"
+                style="@android:style/TextAppearance.Material.Caption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginLeft="2dp"
+                tools:text="Battles" />
 
         </LinearLayout>
+
         <SeekBar
-            android:id="@+id/seekBar"
+            android:id="@+id/playback_seek_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
@@ -58,7 +55,7 @@
 
 
         <include
-            android:id="@+id/include"
+            android:id="@+id/playback_controls_container"
             layout="@layout/layout_player_controls"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

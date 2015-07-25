@@ -7,8 +7,11 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.akodiakson.udacity.portfolio.R;
 import com.akodiakson.udacity.portfolio.fragment.TopTracksFragment;
+import com.akodiakson.udacity.portfolio.model.SpotifyArtistModel;
 
-public class ArtistTopTracksActivity extends AppCompatActivity{
+import kaaes.spotify.webapi.android.models.Track;
+
+public class ArtistTopTracksActivity extends AppCompatActivity implements TopTracksFragment.Callbacks{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,9 +26,6 @@ public class ArtistTopTracksActivity extends AppCompatActivity{
             Intent receivedIntent = getIntent();
             if(receivedIntent != null && receivedIntent.getExtras() != null){
                 arguments.putParcelable(TopTracksFragment.EXTRA_SPOTIFY_ARTIST, receivedIntent.getParcelableExtra(TopTracksFragment.EXTRA_SPOTIFY_ARTIST));
-//                arguments.putString(TopTracksFragment.EXTRA_ARTIST_NAME, receivedIntent.getStringExtra(TopTracksFragment.EXTRA_ARTIST_NAME));
-//                arguments.putString(TopTracksFragment.EXTRA_ARTIST_IMAGE_URL, receivedIntent.getStringExtra(TopTracksFragment.EXTRA_ARTIST_IMAGE_URL));
-//                arguments.putInt(TopTracksFragment.EXTRA_ARTIST_IMAGE_RESIZE_WIDTH, receivedIntent.getIntExtra(TopTracksFragment.EXTRA_ARTIST_IMAGE_RESIZE_WIDTH, 0));
             }
 
             TopTracksFragment fragment = new TopTracksFragment();
@@ -34,5 +34,12 @@ public class ArtistTopTracksActivity extends AppCompatActivity{
                     .add(R.id.top_tracks_content_frame_container, fragment)
                     .commit();
         }
+    }
+
+    @Override
+    public void onArtistTrackSelectedForPlayback(Track track) {
+        //TODO -- implement, param will be new
+        Intent intent = new Intent(this, PlaybackActivity.class);
+        startActivity(intent);
     }
 }
