@@ -24,6 +24,7 @@ import android.widget.Toast;
 import com.akodiakson.udacity.portfolio.R;
 import com.akodiakson.udacity.portfolio.activity.ArtistTopTracksActivity;
 import com.akodiakson.udacity.portfolio.model.SpotifyArtistModel;
+import com.akodiakson.udacity.portfolio.model.TrackModel;
 import com.akodiakson.udacity.portfolio.network.TopTracksTask;
 import com.akodiakson.udacity.portfolio.util.DimensUtil;
 import com.akodiakson.udacity.portfolio.util.NetworkUtil;
@@ -57,7 +58,7 @@ public class TopTracksFragment extends Fragment implements OnTopTracksResultList
         /**
          * Callback for when an item has been selected.
          */
-        public void onArtistTrackSelectedForPlayback(Track spotifyArtistModel);
+        void onArtistTrackSelectedForPlayback(TrackModel spotifyArtistModel);
     }
 
     public TopTracksFragment() {

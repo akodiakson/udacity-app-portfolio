@@ -8,6 +8,8 @@
     <!-- Needed to verify connectivity before calling Spotify API -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
+
+
     <application
         android:name=".PortfolioApplication"
         android:allowBackup="true"

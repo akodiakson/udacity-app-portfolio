@@ -5,22 +5,25 @@
     android:layout_height="128dp"
     android:gravity="center">
 
-    <ImageView
+    <ImageButton
         android:id="@+id/player_previous"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        style="?android:attr/borderlessButtonStyle"
         android:src="@android:drawable/ic_media_previous"/>
-    <ImageView
+    <ImageButton
         android:id="@+id/player_play_pause"
-        android:layout_width="0dp"
-        android:layout_height="64dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="?android:attr/borderlessButtonStyle"
         android:src="@android:drawable/ic_media_play"
-        android:layout_weight="1" />
-    <ImageView
+        android:layout_weight="2" />
+    <ImageButton
         android:id="@+id/player_next"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        style="?android:attr/borderlessButtonStyle"
         android:src="@android:drawable/ic_media_next"
         android:layout_weight="1"/>
 

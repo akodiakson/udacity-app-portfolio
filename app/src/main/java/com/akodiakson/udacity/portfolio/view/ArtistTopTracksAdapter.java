@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.akodiakson.udacity.portfolio.R;
 import com.akodiakson.udacity.portfolio.fragment.TopTracksFragment;
+import com.akodiakson.udacity.portfolio.model.TrackModel;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -62,10 +63,22 @@ public class ArtistTopTracksAdapter extends RecyclerView.Adapter<ArtistTopTracks
         holder.containerView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                callbacks.onArtistTrackSelectedForPlayback(track);
+                TrackModel trackModel = parcelizeTrack(track);
+                callbacks.onArtistTrackSelectedForPlayback(trackModel);
             }
         });
 
+    }
+
+    private TrackModel parcelizeTrack(Track track) {
+        TrackModel trackModel = new TrackModel();
+        trackModel.albumImage = track.album.images.get(0).url;
+        trackModel.albumName = track.album.name;
+        trackModel.artistName = track.artists.get(0).name;
+        trackModel.duration = (int)track.duration_ms;
+        trackModel.previewUrl = track.preview_url;
+        trackModel.name = track.name;
+        return trackModel;
     }
 
     @Override
