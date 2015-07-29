@@ -29,6 +29,7 @@
             android:hint="@string/artist_search_hint"
             android:imeOptions="actionGo"
             android:singleLine="true"
+            android:text="@string/demo_artist_name"
             tools:text="@string/demo_artist_name" />
     </android.support.design.widget.TextInputLayout>
 

@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import com.akodiakson.udacity.portfolio.R;
 import com.akodiakson.udacity.portfolio.fragment.TopTracksFragment;
 import com.akodiakson.udacity.portfolio.model.SpotifyArtistModel;
+import com.akodiakson.udacity.portfolio.model.TrackModel;
 
 import kaaes.spotify.webapi.android.models.Track;
 
@@ -37,9 +38,12 @@ public class ArtistTopTracksActivity extends AppCompatActivity implements TopTra
     }
 
     @Override
-    public void onArtistTrackSelectedForPlayback(Track track) {
+    public void onArtistTrackSelectedForPlayback(TrackModel track) {
         //TODO -- implement, param will be new
         Intent intent = new Intent(this, PlaybackActivity.class);
+        Bundle extras = new Bundle();
+        extras.putParcelable(PlaybackFragment.EXTRA_SELECTED_SONG, track);
+        intent.putExtras(extras);
         startActivity(intent);
     }
 }

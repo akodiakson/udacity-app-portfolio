@@ -1,6 +1,10 @@
 package com.akodiakson.udacity.portfolio.activity;
 
-import android.media.Image;
+
+
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,11 +14,20 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.akodiakson.udacity.portfolio.R;
+import com.akodiakson.udacity.portfolio.model.TrackModel;
+import com.squareup.picasso.Picasso;
+
+import java.io.IOException;
 
 /**
  * A placeholder fragment containing a simple view.
  */
 public class PlaybackFragment extends Fragment {
+
+    public static final String EXTRA_SELECTED_SONG = "EXTRA_SELECTED_SONG";
+    private TrackModel mTrack;
+
+    private MediaPlayer mMediaPlayer;
 
     public PlaybackFragment() {
     }
@@ -28,15 +41,33 @@ public class PlaybackFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        mMediaPlayer = new MediaPlayer();
+        populateTrackModel();
         setupAlbumArt();
         setupAlbumDetails();
         setupPlaybackControls();
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        //TODO -- see if this is the best place to release
+        mMediaPlayer.release();
+        mMediaPlayer = null;
+    }
+
+    private void populateTrackModel(){
+        Bundle arguments = getActivity().getIntent().getExtras();
+        TrackModel track = (TrackModel) arguments.getParcelable(EXTRA_SELECTED_SONG);
+        this.mTrack = track;
+    }
+
     private void setupAlbumArt(){
         ImageView albumArt = (ImageView) getView().findViewById(R.id.playback_album_cover);
         //TODO -- load image from picasso
-
+        Picasso.with(getActivity())
+                .load(mTrack.albumImage)
+                .into(albumArt);
     }
 
     private void setupAlbumDetails(){
@@ -46,9 +77,9 @@ public class PlaybackFragment extends Fragment {
         TextView artistName = (TextView) view.findViewById(R.id.playback_artist_name);
         TextView albumName = (TextView) view.findViewById(R.id.playback_track_album_name);
 
-        songName.setText("Atlas");
-        artistName.setText("Battles");
-        albumName.setText("Mirrored");
+        songName.setText(mTrack.name);
+        artistName.setText(mTrack.artistName);
+        albumName.setText(mTrack.albumName);
 
     }
 
@@ -67,10 +98,33 @@ public class PlaybackFragment extends Fragment {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO -- switch the visible state from|to play|pause
-                //TODO -- start|pause playback
+                playSelectedTrack();
             }
         };
+    }
+
+    private void playSelectedTrack() {
+        //TODO -- switch the visible state from|to play|pause
+        //TODO -- start|pause playback
+
+        String url = mTrack.previewUrl; // your URL here
+
+        mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+
+        try {
+            mMediaPlayer.setDataSource(url); //this can take awhile and/or throw an exception
+            mMediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                @Override
+                public void onPrepared(MediaPlayer mp) {
+                    mp.start(); //when you are prepared, then start the stream
+                }
+            });
+            mMediaPlayer.prepareAsync(); // might take long! (for buffering, etc)
+        } catch (IOException e) {
+            Snackbar
+                    .make(getView().findViewById(R.id.toolbar), ":( no audio", Snackbar.LENGTH_LONG)
+                    .show();
+        }
     }
 
     private View.OnClickListener onPreviousTapped() {
