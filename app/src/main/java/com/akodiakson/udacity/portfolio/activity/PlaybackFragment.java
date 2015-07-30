@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import com.akodiakson.udacity.portfolio.R;
 import com.akodiakson.udacity.portfolio.model.TrackModel;
-import com.akodiakson.udacity.portfolio.service.SpotifyPlaybackService;
+import com.akodiakson.udacity.portfolio.service.SpotifyPlayerService;
 import com.squareup.picasso.Picasso;
 
 /**
@@ -106,7 +106,12 @@ public class PlaybackFragment extends Fragment {
         //TODO -- start|pause playback
 
         String url = mTrack.previewUrl; // your URL here
-        SpotifyPlaybackService.startActionPausePlayback(getActivity(), "", "");
+//        SpotifyPlaybackService.startActionStartPlayback(getActivity(), url, "");
+
+        Intent intent = new Intent(getActivity(), SpotifyPlayerService.class);
+        intent.putExtra(SpotifyPlayerService.EXTRA_TRACK_URL, url);
+        getActivity().startService(intent);
+
 
 //        mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
 //

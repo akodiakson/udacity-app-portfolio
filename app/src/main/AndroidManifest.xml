@@ -44,8 +44,9 @@
         </activity>
 
         <service
-            android:name=".service.SpotifyPlaybackService"
-            android:exported="false" >
+            android:name=".service.SpotifyPlayerService"
+            android:enabled="true"
+            android:exported="true" >
         </service>
     </application>
 
