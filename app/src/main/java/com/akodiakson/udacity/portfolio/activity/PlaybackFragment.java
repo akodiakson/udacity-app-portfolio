@@ -2,9 +2,8 @@ package com.akodiakson.udacity.portfolio.activity;
 
 
 
-import android.media.AudioManager;
+import android.content.Intent;
 import android.media.MediaPlayer;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -15,9 +14,8 @@ import android.widget.TextView;
 
 import com.akodiakson.udacity.portfolio.R;
 import com.akodiakson.udacity.portfolio.model.TrackModel;
+import com.akodiakson.udacity.portfolio.service.SpotifyPlaybackService;
 import com.squareup.picasso.Picasso;
-
-import java.io.IOException;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -108,23 +106,30 @@ public class PlaybackFragment extends Fragment {
         //TODO -- start|pause playback
 
         String url = mTrack.previewUrl; // your URL here
+        SpotifyPlaybackService.startActionPausePlayback(getActivity(), "", "");
 
-        mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-
-        try {
-            mMediaPlayer.setDataSource(url); //this can take awhile and/or throw an exception
-            mMediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                @Override
-                public void onPrepared(MediaPlayer mp) {
-                    mp.start(); //when you are prepared, then start the stream
-                }
-            });
-            mMediaPlayer.prepareAsync(); // might take long! (for buffering, etc)
-        } catch (IOException e) {
-            Snackbar
-                    .make(getView().findViewById(R.id.toolbar), ":( no audio", Snackbar.LENGTH_LONG)
-                    .show();
-        }
+//        mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+//
+//        try {
+//            mMediaPlayer.setDataSource(url); //this can take awhile and/or throw an exception
+//            mMediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+//                @Override
+//                public void onPrepared(MediaPlayer mp) {
+//                    mp.start(); //when you are prepared, then start the stream
+//                }
+//            });
+//            mMediaPlayer.prepareAsync(); // might take long! (for buffering, etc)
+//            mMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+//                @Override
+//                public void onCompletion(MediaPlayer mp) {
+//
+//                }
+//            });
+//        } catch (IOException e) {
+//            Snackbar
+//                    .make(getView().findViewById(R.id.toolbar), ":( no audio", Snackbar.LENGTH_LONG)
+//                    .show();
+//        }
     }
 
     private View.OnClickListener onPreviousTapped() {
