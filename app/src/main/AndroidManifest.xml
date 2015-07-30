@@ -8,8 +8,6 @@
     <!-- Needed to verify connectivity before calling Spotify API -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
-
-
     <application
         android:name=".PortfolioApplication"
         android:allowBackup="true"
@@ -44,6 +42,12 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.akodiakson.udacity.portfolio.activity.ArtistTopTracksActivity" />
         </activity>
+
+        <service
+            android:name=".service.SpotifyPlayerService"
+            android:enabled="true"
+            android:exported="true" >
+        </service>
     </application>
 
 </manifest>
