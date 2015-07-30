@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.akodiakson.udacity.portfolio.R;
@@ -82,6 +83,27 @@ public class PlaybackFragment extends Fragment {
     }
 
     private void setupPlaybackControls(){
+        SeekBar seekBar = (SeekBar) getView().findViewById(R.id.playback_seek_bar);
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                //TODO -- Here, the've let go, so advance the track x ms
+                int millis_to_advance = seekBar.getProgress();
+                Intent intent = new Intent(getActivity(), SpotifyPlayerService.class);
+                getActivity().startService(intent);
+            }
+        });
+
         View controlsContainer = getView().findViewById(R.id.playback_controls_container);
         ImageView previous = (ImageView) controlsContainer.findViewById(R.id.player_previous);
         ImageView playPause = (ImageView) controlsContainer.findViewById(R.id.player_play_pause);
@@ -103,11 +125,9 @@ public class PlaybackFragment extends Fragment {
 
     private void playSelectedTrack() {
         //TODO -- switch the visible state from|to play|pause
-        //TODO -- start|pause playback
 
         String url = mTrack.previewUrl; // your URL here
-//        SpotifyPlaybackService.startActionStartPlayback(getActivity(), url, "");
-
+        //TODO -- consider passing all 10 top tracks urls for continuous playback
         Intent intent = new Intent(getActivity(), SpotifyPlayerService.class);
         intent.putExtra(SpotifyPlayerService.EXTRA_TRACK_URL, url);
         getActivity().startService(intent);

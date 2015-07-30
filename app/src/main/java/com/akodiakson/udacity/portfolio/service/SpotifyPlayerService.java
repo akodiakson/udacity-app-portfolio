@@ -8,6 +8,8 @@ import android.os.IBinder;
 import java.io.IOException;
 
 public class SpotifyPlayerService extends Service {
+
+    //TODO -- create actions here for play/pause, scrub, next/previous
     public static final String EXTRA_TRACK_URL = "EXTRA_TRACK_URL";
 
     private MediaPlayer mMediaPlayer;
@@ -69,7 +71,6 @@ public class SpotifyPlayerService extends Service {
         mMediaPlayer = getMediaPlayer();
     }
 
-
     private void startPlayback(final String url) {
         try {
             mMediaPlayer.setDataSource(url); //this can take awhile and/or throw an exception
@@ -82,13 +83,7 @@ public class SpotifyPlayerService extends Service {
                 }
             });
             mMediaPlayer.prepareAsync(); // might take long! (for buffering, etc)
-            mMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                @Override
-                public void onCompletion(MediaPlayer mp) {
-                    //TODO -- if next track, then play it
-                    stopSelf();
-                }
-            });
+
         } catch (IOException e) {
             //TODO
         }
@@ -97,6 +92,14 @@ public class SpotifyPlayerService extends Service {
     private MediaPlayer getMediaPlayer() {
         if (mMediaPlayer == null) {
             mMediaPlayer = new MediaPlayer();
+            mMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mp) {
+                    //TODO -- if next track, then play it
+                    stopSelf();
+                }
+            });
+
         }
         return mMediaPlayer;
     }
