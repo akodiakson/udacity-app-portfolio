@@ -21,15 +21,10 @@ import com.akodiakson.udacity.portfolio.service.SpotifyPlayerService;
 import com.squareup.otto.Subscribe;
 import com.squareup.picasso.Picasso;
 
-/**
- * A placeholder fragment containing a simple view.
- */
 public class PlaybackFragment extends Fragment {
 
     public static final String EXTRA_SELECTED_SONG = "EXTRA_SELECTED_SONG";
     private TrackModel mTrack;
-
-//    private MediaPlayer mMediaPlayer;
 
     public PlaybackFragment() {
     }
