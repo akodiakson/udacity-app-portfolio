@@ -58,7 +58,7 @@ public class TopTracksFragment extends Fragment implements OnTopTracksResultList
         /**
          * Callback for when an item has been selected.
          */
-        void onArtistTrackSelectedForPlayback(TrackModel spotifyArtistModel);
+        void onArtistTrackSelectedForPlayback(TrackModel spotifyArtistModel, ArrayList<TrackModel> topTracks);
     }
 
     public TopTracksFragment() {

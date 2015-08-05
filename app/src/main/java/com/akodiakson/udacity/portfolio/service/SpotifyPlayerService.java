@@ -88,6 +88,8 @@ public class SpotifyPlayerService extends Service {
 
         } catch (IOException e) {
             //TODO
+        } catch (IllegalStateException ex) {
+            //TODO
         }
     }
 

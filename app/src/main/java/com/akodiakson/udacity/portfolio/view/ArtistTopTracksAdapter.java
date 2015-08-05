@@ -17,6 +17,7 @@ import com.akodiakson.udacity.portfolio.model.TrackModel;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import kaaes.spotify.webapi.android.models.Track;
@@ -64,7 +65,12 @@ public class ArtistTopTracksAdapter extends RecyclerView.Adapter<ArtistTopTracks
             @Override
             public void onClick(View v) {
                 TrackModel trackModel = parcelizeTrack(track);
-                callbacks.onArtistTrackSelectedForPlayback(trackModel);
+
+                ArrayList<TrackModel> trackModels = new ArrayList<>();
+                for(Track aTrack : topTracks){
+                    trackModels.add(parcelizeTrack(aTrack));
+                }
+                callbacks.onArtistTrackSelectedForPlayback(trackModel, trackModels);
             }
         });
 

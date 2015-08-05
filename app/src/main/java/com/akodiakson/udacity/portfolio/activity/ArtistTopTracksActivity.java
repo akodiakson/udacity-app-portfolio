@@ -10,6 +10,9 @@ import com.akodiakson.udacity.portfolio.fragment.TopTracksFragment;
 import com.akodiakson.udacity.portfolio.model.SpotifyArtistModel;
 import com.akodiakson.udacity.portfolio.model.TrackModel;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import kaaes.spotify.webapi.android.models.Track;
 
 public class ArtistTopTracksActivity extends AppCompatActivity implements TopTracksFragment.Callbacks{
@@ -38,11 +41,12 @@ public class ArtistTopTracksActivity extends AppCompatActivity implements TopTra
     }
 
     @Override
-    public void onArtistTrackSelectedForPlayback(TrackModel track) {
+    public void onArtistTrackSelectedForPlayback(TrackModel track, ArrayList<TrackModel> tracks) {
         //TODO -- implement, param will be new
         Intent intent = new Intent(this, PlaybackActivity.class);
         Bundle extras = new Bundle();
         extras.putParcelable(PlaybackFragment.EXTRA_SELECTED_SONG, track);
+        extras.putParcelableArrayList(PlaybackFragment.EXTRA_TOP_TRACKS, tracks);
         intent.putExtras(extras);
         startActivity(intent);
     }

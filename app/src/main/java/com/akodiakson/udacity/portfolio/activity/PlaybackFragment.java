@@ -3,7 +3,6 @@ package com.akodiakson.udacity.portfolio.activity;
 
 
 import android.content.Intent;
-import android.media.MediaPlayer;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -21,10 +20,16 @@ import com.akodiakson.udacity.portfolio.service.SpotifyPlayerService;
 import com.squareup.otto.Subscribe;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class PlaybackFragment extends Fragment {
 
     public static final String EXTRA_SELECTED_SONG = "EXTRA_SELECTED_SONG";
+    public static final String EXTRA_TOP_TRACKS = "EXTRA_TOP_TRACKS";
+
     private TrackModel mTrack;
+    private List<TrackModel> mTopTracks;
 
     public PlaybackFragment() {
     }
@@ -65,8 +70,46 @@ public class PlaybackFragment extends Fragment {
 
     private void populateTrackModel(){
         Bundle arguments = getActivity().getIntent().getExtras();
-        TrackModel track = (TrackModel) arguments.getParcelable(EXTRA_SELECTED_SONG);
+        TrackModel track = arguments.getParcelable(EXTRA_SELECTED_SONG);
+        List<TrackModel> topTracks = arguments.getParcelableArrayList(EXTRA_TOP_TRACKS);
+
         this.mTrack = track;
+        this.mTopTracks = topTracks;
+    }
+
+    private void advanceToNextTrack(){
+        int currentTrackPosition = getCurrentTrackPosition();
+        int nextPosition = (currentTrackPosition == mTopTracks.size() - 1) ? 0 : currentTrackPosition + 1;
+        TrackModel nextTrack = mTopTracks.get(nextPosition);
+        mTrack = nextTrack;
+        //Update the UI for the next track
+        setupAlbumArt();
+        setupAlbumDetails();
+
+        //start playing the next track
+        playSelectedTrack();
+    }
+
+    private void goBackToPreviousTrack(){
+        int currentTrackPosition = getCurrentTrackPosition();
+        int nextPosition = (currentTrackPosition == 0) ? mTopTracks.size() -1 : currentTrackPosition -1;
+        TrackModel nextTrack = mTopTracks.get(nextPosition);
+        mTrack = nextTrack;
+        //Update the UI for the next track
+        setupAlbumArt();
+        setupAlbumDetails();
+
+        //start playing the next track
+        playSelectedTrack();
+    }
+
+    private int getCurrentTrackPosition() {
+        for(int i = 0; i < mTopTracks.size(); i++){
+            if(mTrack.previewUrl.equals(mTopTracks.get(i).previewUrl)){
+                return i;
+            }
+        }
+        return -1;
     }
 
     private void setupAlbumArt(){
@@ -132,44 +175,17 @@ public class PlaybackFragment extends Fragment {
     }
 
     private void playSelectedTrack() {
-        //TODO -- switch the visible state from|to play|pause
-
         String url = mTrack.previewUrl; // your URL here
-        //TODO -- consider passing all 10 top tracks urls for continuous playback
         Intent intent = new Intent(getActivity(), SpotifyPlayerService.class);
         intent.putExtra(SpotifyPlayerService.EXTRA_TRACK_URL, url);
         getActivity().startService(intent);
-
-
-//        mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-//
-//        try {
-//            mMediaPlayer.setDataSource(url); //this can take awhile and/or throw an exception
-//            mMediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-//                @Override
-//                public void onPrepared(MediaPlayer mp) {
-//                    mp.start(); //when you are prepared, then start the stream
-//                }
-//            });
-//            mMediaPlayer.prepareAsync(); // might take long! (for buffering, etc)
-//            mMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-//                @Override
-//                public void onCompletion(MediaPlayer mp) {
-//
-//                }
-//            });
-//        } catch (IOException e) {
-//            Snackbar
-//                    .make(getView().findViewById(R.id.toolbar), ":( no audio", Snackbar.LENGTH_LONG)
-//                    .show();
-//        }
     }
 
     private View.OnClickListener onPreviousTapped() {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                goBackToPreviousTrack();
             }
         };
     }
@@ -178,7 +194,7 @@ public class PlaybackFragment extends Fragment {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                advanceToNextTrack();
             }
         };
     }
