@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.IBinder;
 
+import com.akodiakson.udacity.portfolio.application.BusProvider;
+
 import java.io.IOException;
 
 public class SpotifyPlayerService extends Service {
@@ -105,12 +107,24 @@ public class SpotifyPlayerService extends Service {
     }
 
     private void markAsPlaying() {
+        BusProvider.getInstance().post(new PlayerPlayingEvent());
         mIsPaused = false;
         mIsCurrentlyPlaying = true;
     }
 
     private void markAsPaused() {
+        BusProvider.getInstance().post(new PlayerPausedEvent());
         mIsCurrentlyPlaying = false;
         mIsPaused = true;
     }
+
+    public static final class PlayerPlayingEvent{
+        public PlayerPlayingEvent(){}
+    }
+
+    public static final class PlayerPausedEvent{
+        public PlayerPausedEvent(){}
+    }
+
+    //TODO -- An event for next song advanced?
 }

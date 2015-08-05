@@ -12,10 +12,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.akodiakson.udacity.portfolio.R;
+import com.akodiakson.udacity.portfolio.application.BusProvider;
 import com.akodiakson.udacity.portfolio.model.TrackModel;
 import com.akodiakson.udacity.portfolio.service.SpotifyPlayerService;
+import com.squareup.otto.Subscribe;
 import com.squareup.picasso.Picasso;
 
 /**
@@ -26,7 +29,7 @@ public class PlaybackFragment extends Fragment {
     public static final String EXTRA_SELECTED_SONG = "EXTRA_SELECTED_SONG";
     private TrackModel mTrack;
 
-    private MediaPlayer mMediaPlayer;
+//    private MediaPlayer mMediaPlayer;
 
     public PlaybackFragment() {
     }
@@ -40,7 +43,7 @@ public class PlaybackFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        mMediaPlayer = new MediaPlayer();
+        BusProvider.getInstance().register(this);
         populateTrackModel();
         setupAlbumArt();
         setupAlbumDetails();
@@ -48,11 +51,21 @@ public class PlaybackFragment extends Fragment {
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
-        //TODO -- see if this is the best place to release
-        mMediaPlayer.release();
-        mMediaPlayer = null;
+    public void onPause() {
+        super.onPause();
+        BusProvider.getInstance().unregister(this);
+    }
+
+    @Subscribe
+    public void onPlayerPlaying(SpotifyPlayerService.PlayerPlayingEvent event){
+        ImageView playPause = (ImageView) getView().findViewById(R.id.player_play_pause);
+        playPause.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_media_pause, null));
+    }
+
+    @Subscribe
+    public void onPlayerPaused(SpotifyPlayerService.PlayerPausedEvent event){
+        ImageView playPause = (ImageView) getView().findViewById(R.id.player_play_pause);
+        playPause.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_media_play, null));
     }
 
     private void populateTrackModel(){
@@ -97,7 +110,7 @@ public class PlaybackFragment extends Fragment {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                //TODO -- Here, the've let go, so advance the track x ms
+                //TODO -- Here, they've let go, so advance the track x ms
                 int millis_to_advance = seekBar.getProgress();
                 Intent intent = new Intent(getActivity(), SpotifyPlayerService.class);
                 getActivity().startService(intent);
