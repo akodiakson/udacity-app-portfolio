@@ -77,7 +77,12 @@ public class PlaybackFragment extends Fragment {
     public void onSeekBarAdvance(SpotifyPlayerService.AdvanceSeekBarEvent event){
         int millisToAdvance = event.getMillisToAdvance();
         SeekBar seekBar = (SeekBar) getView().findViewById(R.id.playback_seek_bar);
-        seekBar.setProgress(millisToAdvance/1000);
+        seekBar.setProgress(millisToAdvance / 1000);
+    }
+
+    @Subscribe
+    public void onSongCompleted(SpotifyPlayerService.SongCompletedEvent event){
+        advanceToNextTrack();
     }
     private void populateTrackModel(){
         Bundle arguments = getActivity().getIntent().getExtras();

@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.os.IBinder;
 
 import com.akodiakson.udacity.portfolio.application.BusProvider;
+import com.squareup.otto.Bus;
 
 import java.io.IOException;
 
@@ -106,6 +107,12 @@ public class SpotifyPlayerService extends Service {
         try {
 
             mMediaPlayer.setDataSource(url); //this can take awhile and/or throw an exception
+            mMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mp) {
+                    BusProvider.getInstance().post(new SongCompletedEvent());
+                }
+            });
             mMediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                 @Override
                 public void onPrepared(MediaPlayer mp) {
@@ -156,6 +163,10 @@ public class SpotifyPlayerService extends Service {
 
     public static final class PlayerPausedEvent{
         public PlayerPausedEvent(){}
+    }
+
+    public static final class SongCompletedEvent{
+        public SongCompletedEvent(){}
     }
 
     public static final class AdvanceSeekBarEvent{
