@@ -3,6 +3,8 @@ package com.akodiakson.udacity.portfolio.service;
 import android.app.Service;
 import android.content.Intent;
 import android.media.MediaPlayer;
+import android.media.TimedText;
+import android.os.Handler;
 import android.os.IBinder;
 
 import com.akodiakson.udacity.portfolio.application.BusProvider;
@@ -13,11 +15,26 @@ public class SpotifyPlayerService extends Service {
 
     //TODO -- create actions here for play/pause, scrub, next/previous
     public static final String EXTRA_TRACK_URL = "EXTRA_TRACK_URL";
+    public static final String ACTION_SEEK = "ACTION_SEEK";
+    public static final String EXTRA_MILLIS_TO_SEEK = "EXTRA_MILLIS_TO_SEEK";
 
     private MediaPlayer mMediaPlayer;
     private boolean mIsCurrentlyPlaying = false;
     private boolean mIsPaused = false;
     private String mCurrentlyPlayingUrl;
+
+    private Handler handler = new Handler();
+
+    Runnable run = new Runnable() {
+        @Override
+        public void run() {
+            if (mMediaPlayer != null && mMediaPlayer.isPlaying()) {
+                BusProvider.getInstance().post(new AdvanceSeekBarEvent(mMediaPlayer.getCurrentPosition()));
+
+            }
+            handler.postDelayed(run, 100);
+        }
+    };
 
     public SpotifyPlayerService() {
     }
@@ -35,23 +52,33 @@ public class SpotifyPlayerService extends Service {
 
         mMediaPlayer = getMediaPlayer();
 
-        if(mCurrentlyPlayingUrl == null || url.equals(mCurrentlyPlayingUrl)){
-            if (!mIsCurrentlyPlaying && !mIsPaused) {
+        if(ACTION_SEEK.equals(intent.getAction())){
+            int millisToSeek = intent.getIntExtra(SpotifyPlayerService.EXTRA_MILLIS_TO_SEEK, 0);
+            mMediaPlayer.seekTo(millisToSeek);
+        } else {
+
+            if (mCurrentlyPlayingUrl == null || url.equals(mCurrentlyPlayingUrl)) {
+                if (!mIsCurrentlyPlaying && !mIsPaused) {
+                    startPlayback(url);
+                } else if (mIsPaused) {
+                    mMediaPlayer.start();
+                    markAsPlaying();
+                } else {
+                    pausePlayback();
+                }
+            } else {
+                stopPlayback();
                 startPlayback(url);
             }
-            else if (mIsPaused) {
-                mMediaPlayer.start();
-                markAsPlaying();
-            } else {
-                pausePlayback();
-            }
-        } else {
-            stopPlayback();
-            startPlayback(url);
         }
+
+         run.run();
+
 
         return super.onStartCommand(intent, flags, startId);
     }
+
+
 
     @Override
     public void onDestroy() {
@@ -73,8 +100,11 @@ public class SpotifyPlayerService extends Service {
         mMediaPlayer = getMediaPlayer();
     }
 
+
+
     private void startPlayback(final String url) {
         try {
+
             mMediaPlayer.setDataSource(url); //this can take awhile and/or throw an exception
             mMediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                 @Override
@@ -126,6 +156,17 @@ public class SpotifyPlayerService extends Service {
 
     public static final class PlayerPausedEvent{
         public PlayerPausedEvent(){}
+    }
+
+    public static final class AdvanceSeekBarEvent{
+        private int millisToAdvance;
+        public AdvanceSeekBarEvent(int millisToAdvance){
+            this.millisToAdvance = millisToAdvance;
+        }
+
+        public int getMillisToAdvance() {
+            return millisToAdvance;
+        }
     }
 
     //TODO -- An event for next song advanced?

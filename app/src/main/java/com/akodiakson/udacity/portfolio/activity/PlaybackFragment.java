@@ -3,8 +3,12 @@ package com.akodiakson.udacity.portfolio.activity;
 
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.BitmapDrawable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v7.graphics.Palette;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +22,7 @@ import com.akodiakson.udacity.portfolio.application.BusProvider;
 import com.akodiakson.udacity.portfolio.model.TrackModel;
 import com.akodiakson.udacity.portfolio.service.SpotifyPlayerService;
 import com.squareup.otto.Subscribe;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -68,6 +73,12 @@ public class PlaybackFragment extends Fragment {
         playPause.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_media_play, null));
     }
 
+    @Subscribe
+    public void onSeekBarAdvance(SpotifyPlayerService.AdvanceSeekBarEvent event){
+        int millisToAdvance = event.getMillisToAdvance();
+        SeekBar seekBar = (SeekBar) getView().findViewById(R.id.playback_seek_bar);
+        seekBar.setProgress(millisToAdvance/1000);
+    }
     private void populateTrackModel(){
         Bundle arguments = getActivity().getIntent().getExtras();
         TrackModel track = arguments.getParcelable(EXTRA_SELECTED_SONG);
@@ -113,11 +124,21 @@ public class PlaybackFragment extends Fragment {
     }
 
     private void setupAlbumArt(){
-        ImageView albumArt = (ImageView) getView().findViewById(R.id.playback_album_cover);
+        final ImageView albumArt = (ImageView) getView().findViewById(R.id.playback_album_cover);
         //TODO -- load image from picasso
         Picasso.with(getActivity())
                 .load(mTrack.albumImage)
-                .into(albumArt);
+                .into(albumArt, new Callback.EmptyCallback(){
+                    @Override public void onSuccess() {
+                        //Source : http://jakewharton.com/coercing-picasso-to-play-with-palette/
+                        Bitmap bitmap = ((BitmapDrawable) albumArt.getDrawable()).getBitmap(); // Ew!
+                        Palette palette = Palette.from(bitmap).generate();
+                        int vibrantColor = palette.getVibrantColor(R.color.colorAccent);
+                        SeekBar seekBar = (SeekBar) getView().findViewById(R.id.playback_seek_bar);
+                        seekBar.getThumb().setColorFilter(vibrantColor, PorterDuff.Mode.MULTIPLY);
+                        // TODO apply palette to text views, backgrounds, etc.
+                    }
+                });
     }
 
     private void setupAlbumDetails(){
@@ -149,8 +170,10 @@ public class PlaybackFragment extends Fragment {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 //TODO -- Here, they've let go, so advance the track x ms
-                int millis_to_advance = seekBar.getProgress();
+                int millis_to_advance = seekBar.getProgress() * 1000;
                 Intent intent = new Intent(getActivity(), SpotifyPlayerService.class);
+                intent.setAction(SpotifyPlayerService.ACTION_SEEK);
+                intent.putExtra(SpotifyPlayerService.EXTRA_MILLIS_TO_SEEK, millis_to_advance);
                 getActivity().startService(intent);
             }
         });
