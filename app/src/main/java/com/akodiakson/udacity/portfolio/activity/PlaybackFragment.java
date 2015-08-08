@@ -4,6 +4,7 @@ package com.akodiakson.udacity.portfolio.activity;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.ColorFilter;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.BitmapDrawable;
 import android.support.v4.app.Fragment;
@@ -138,9 +139,14 @@ public class PlaybackFragment extends Fragment {
                         //Source : http://jakewharton.com/coercing-picasso-to-play-with-palette/
                         Bitmap bitmap = ((BitmapDrawable) albumArt.getDrawable()).getBitmap(); // Ew!
                         Palette palette = Palette.from(bitmap).generate();
-                        int vibrantColor = palette.getVibrantColor(R.color.colorAccent);
-                        SeekBar seekBar = (SeekBar) getView().findViewById(R.id.playback_seek_bar);
-                        seekBar.getThumb().setColorFilter(vibrantColor, PorterDuff.Mode.MULTIPLY);
+                        final int vibrantColor = palette.getVibrantColor(R.color.colorAccent);
+                        final SeekBar seekBar = (SeekBar) getView().findViewById(R.id.playback_seek_bar);
+                        seekBar.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                seekBar.getThumb().setColorFilter(vibrantColor, PorterDuff.Mode.MULTIPLY);
+                            }
+                        }, 200);
                         // TODO apply palette to text views, backgrounds, etc.
                     }
                 });
