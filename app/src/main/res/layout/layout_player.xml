@@ -5,6 +5,16 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <TextView
+        android:id="@+id/playback_song_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:gravity="center_horizontal"
+        style="@android:style/TextAppearance.Material.Headline"
+        tools:text="Atlas"/>
+
+
     <ImageView
         android:id="@+id/playback_album_cover"
         android:layout_width="240dp"
@@ -19,27 +29,19 @@
         android:gravity="center_horizontal"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/playback_song_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            style="@android:style/TextAppearance.Material.Headline"
-            tools:text="Atlas"/>
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
             android:layout_marginTop="24dp"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/playback_artist_name"
                 style="@android:style/TextAppearance.Material.Body2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="2dp"
                 tools:text="Battles" />
 
             <TextView
@@ -47,8 +49,6 @@
                 style="@android:style/TextAppearance.Material.Caption"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:layout_marginLeft="2dp"
                 tools:text="Mirrored" />
 
         </LinearLayout>
