@@ -113,7 +113,7 @@ public class TopTracksFragment extends Fragment implements OnTopTracksResultList
     private void setupTopTracksList() {
         RecyclerView topTracksView = (RecyclerView) getView().findViewById(R.id.artist_top_tracks_recycler_view);
         topTracksView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        adapter = new ArtistTopTracksAdapter((ArtistTopTracksActivity)getActivity(), topTracks);
+        adapter = new ArtistTopTracksAdapter((TopTracksFragment.Callbacks)getActivity(), topTracks);
         topTracksView.setAdapter(adapter);
     }
 

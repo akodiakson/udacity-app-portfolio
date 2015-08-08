@@ -10,8 +10,11 @@ import com.akodiakson.udacity.portfolio.R;
 import com.akodiakson.udacity.portfolio.fragment.ArtistSearchFragment;
 import com.akodiakson.udacity.portfolio.fragment.TopTracksFragment;
 import com.akodiakson.udacity.portfolio.model.SpotifyArtistModel;
+import com.akodiakson.udacity.portfolio.model.TrackModel;
 
-public class ArtistSearchActivity extends AppCompatActivity implements ArtistSearchFragment.Callbacks  {
+import java.util.ArrayList;
+
+public class ArtistSearchActivity extends AppCompatActivity implements ArtistSearchFragment.Callbacks, TopTracksFragment.Callbacks  {
 
     private boolean mTwoPane;
 
@@ -66,5 +69,15 @@ public class ArtistSearchActivity extends AppCompatActivity implements ArtistSea
 
             startActivity(detailIntent);
         }
+    }
+
+    @Override
+    public void onArtistTrackSelectedForPlayback(TrackModel spotifyArtistModel, ArrayList<TrackModel> topTracks) {
+        Intent intent = new Intent(this, PlaybackActivity.class);
+        Bundle extras = new Bundle();
+        extras.putParcelable(PlaybackFragment.EXTRA_SELECTED_SONG, spotifyArtistModel);
+        extras.putParcelableArrayList(PlaybackFragment.EXTRA_TOP_TRACKS, topTracks);
+        intent.putExtras(extras);
+        startActivity(intent);
     }
 }
