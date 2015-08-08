@@ -54,6 +54,8 @@ public class PlaybackFragment extends Fragment {
         setupAlbumArt();
         setupAlbumDetails();
         setupPlaybackControls();
+
+        playSelectedTrack();
     }
 
     @Override
