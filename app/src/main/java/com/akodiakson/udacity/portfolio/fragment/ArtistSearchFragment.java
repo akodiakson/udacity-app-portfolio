@@ -62,8 +62,8 @@ public class ArtistSearchFragment extends Fragment implements ArtistSearchTaskRe
                              Bundle savedInstanceState) {
         fragmentView = inflater.inflate(R.layout.fragment_artist_search, container, false);
 
-        Toolbar toolbar = (Toolbar) fragmentView.findViewById(R.id.toolbar);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+//        Toolbar toolbar = (Toolbar) fragmentView.findViewById(R.id.toolbar);
+//        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         RecyclerView recyclerView = (RecyclerView) fragmentView.findViewById(R.id.artist_search_recycler_view);
 
         adapter = new ArtistSearchResultAdapter((ArtistSearchActivity)getActivity(), artists);

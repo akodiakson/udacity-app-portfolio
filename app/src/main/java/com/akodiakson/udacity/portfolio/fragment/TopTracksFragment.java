@@ -84,15 +84,14 @@ public class TopTracksFragment extends Fragment implements OnTopTracksResultList
         super.onResume();
 
         Bundle arguments = getActivity().getIntent().getExtras();
-        if(spotifyArtistModel != null){
-
-        }
-        else if (arguments != null) {
-            //you came from a single-pane view, via activity
-            spotifyArtistModel = arguments.getParcelable(EXTRA_SPOTIFY_ARTIST);
-        } else {
-            //you came from a two-pane view, via fragment transaction
-            spotifyArtistModel = getArguments().getParcelable(EXTRA_SPOTIFY_ARTIST);
+        if(spotifyArtistModel == null){
+            if (arguments != null) {
+                //you came from a single-pane view, via activity
+                spotifyArtistModel = arguments.getParcelable(EXTRA_SPOTIFY_ARTIST);
+            } else {
+                //you came from a two-pane view, via fragment transaction
+                spotifyArtistModel = getArguments().getParcelable(EXTRA_SPOTIFY_ARTIST);
+            }
         }
         setupToolbar();
         setupTopTracksList();
@@ -110,9 +109,9 @@ public class TopTracksFragment extends Fragment implements OnTopTracksResultList
 
     private void setupToolbar() {
         toolbar = (Toolbar) getView().findViewById(R.id.toolbar);
-        AppCompatActivity activity = (AppCompatActivity) getActivity();
-        activity.setSupportActionBar(toolbar);
-        ActionBar supportActionBar = activity.getSupportActionBar();
+//        AppCompatActivity activity = (AppCompatActivity) getActivity();
+//        activity.setSupportActionBar(toolbar);
+        android.app.ActionBar supportActionBar = getActivity().getActionBar();
         if (supportActionBar != null) {
             supportActionBar.setDisplayHomeAsUpEnabled(true);
             supportActionBar.setTitle(spotifyArtistModel.artistName);
