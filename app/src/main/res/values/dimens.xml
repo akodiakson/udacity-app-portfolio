@@ -10,6 +10,6 @@
     <!-- top tracks -->
     <dimen name="album_cover_dimen">64dp</dimen>
     <dimen name="artist_top_tracks_image_dimen">192dp</dimen>
-    <dimen name="toolbar_artist_name_offset">96dp</dimen>
+    <dimen name="toolbar_artist_name_offset">16dp</dimen>
     <dimen name="top_tracks_recycler_view_margin">8dp</dimen>
 </resources>

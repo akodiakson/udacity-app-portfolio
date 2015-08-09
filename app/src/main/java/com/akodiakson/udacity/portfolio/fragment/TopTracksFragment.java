@@ -109,8 +109,6 @@ public class TopTracksFragment extends Fragment implements OnTopTracksResultList
 
     private void setupToolbar() {
         toolbar = (Toolbar) getView().findViewById(R.id.toolbar);
-//        AppCompatActivity activity = (AppCompatActivity) getActivity();
-//        activity.setSupportActionBar(toolbar);
         android.app.ActionBar supportActionBar = getActivity().getActionBar();
         if (supportActionBar != null) {
             supportActionBar.setDisplayHomeAsUpEnabled(true);
@@ -141,6 +139,9 @@ public class TopTracksFragment extends Fragment implements OnTopTracksResultList
                 || DimensUtil.isInvalidImageDimensPair(imageDimension, imageDimension)) {
             // Hide the artist image if there aren't any images.
             getView().findViewById(R.id.artistImageTopTracks).setVisibility(View.GONE);
+            toolbar.setBackgroundColor(getResources().getColor(R.color.colorPrimaryText));
+            toolbar.setTitleTextColor(getResources().getColor(R.color.white));
+            toolbar.setTitle(spotifyArtistModel.artistName);
             return;
         }
 
@@ -157,6 +158,7 @@ public class TopTracksFragment extends Fragment implements OnTopTracksResultList
                 Palette palette = Palette.from(bitmap).generate();
                 toolbar.setBackgroundColor(palette.getVibrantColor(R.color.colorPrimaryText));
                 toolbar.setTitleTextColor(palette.getLightVibrantColor(R.color.white));
+                toolbar.setTitle(spotifyArtistModel.artistName);
             }
         };
         Picasso.with(getActivity())
