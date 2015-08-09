@@ -43,6 +43,11 @@ public class ArtistTopTracksActivity extends AppCompatActivity implements TopTra
     @Override
     public void onArtistTrackSelectedForPlayback(TrackModel track, ArrayList<TrackModel> tracks) {
         //TODO -- implement, param will be new
+
+        playForSmallLayout(track, tracks);
+    }
+
+    private void playForSmallLayout(TrackModel track, ArrayList<TrackModel> tracks) {
         Intent intent = new Intent(this, PlaybackActivity.class);
         Bundle extras = new Bundle();
         extras.putParcelable(PlaybackFragment.EXTRA_SELECTED_SONG, track);

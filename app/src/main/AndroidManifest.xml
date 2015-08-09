@@ -37,7 +37,8 @@
         <activity
             android:name=".activity.PlaybackActivity"
             android:label="@string/title_activity_playback"
-            android:parentActivityName=".activity.ArtistTopTracksActivity" >
+            android:parentActivityName=".activity.ArtistTopTracksActivity"
+            android:theme="@style/MyDialogTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.akodiakson.udacity.portfolio.activity.ArtistTopTracksActivity" />
