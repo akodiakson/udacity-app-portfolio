@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">My App Portfolio</string>
 
-    <string name="demo_artist_name">Battles</string>
+    <string name="demo_artist_name">four tet</string>
     <string name="artist_search_hint">Search for an artist</string>
     <string name="artist_image_content_description">Artist image</string>
     <string name="error_no_artists_found">Too obscure, hipster</string>
@@ -28,7 +28,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_demoitem_list">DemoItems</string>
     <string name="title_demoitem_detail">DemoItem Detail</string>
-    <string name="title_activity_playback">Playback</string>
+    <string name="title_activity_playback"></string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
 

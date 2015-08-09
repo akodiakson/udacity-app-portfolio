@@ -15,7 +15,7 @@ import java.util.List;
 
 import kaaes.spotify.webapi.android.models.Track;
 
-public class ArtistTopTracksActivity extends AppCompatActivity implements TopTracksFragment.Callbacks{
+public class TopTracksActivity extends AppCompatActivity implements TopTracksFragment.Callbacks{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +27,10 @@ public class ArtistTopTracksActivity extends AppCompatActivity implements TopTra
             // using a fragment transaction.
             Bundle arguments = new Bundle();
 
-            Intent receivedIntent = getIntent();
+            TopTracksFragment fragment2 = (TopTracksFragment) getSupportFragmentManager().findFragmentById(R.id.top_tracks_content_frame_container);
+
+
+                    Intent receivedIntent = getIntent();
             if(receivedIntent != null && receivedIntent.getExtras() != null){
                 arguments.putParcelable(TopTracksFragment.EXTRA_SPOTIFY_ARTIST, receivedIntent.getParcelableExtra(TopTracksFragment.EXTRA_SPOTIFY_ARTIST));
             }
@@ -43,6 +46,11 @@ public class ArtistTopTracksActivity extends AppCompatActivity implements TopTra
     @Override
     public void onArtistTrackSelectedForPlayback(TrackModel track, ArrayList<TrackModel> tracks) {
         //TODO -- implement, param will be new
+
+        playForSmallLayout(track, tracks);
+    }
+
+    private void playForSmallLayout(TrackModel track, ArrayList<TrackModel> tracks) {
         Intent intent = new Intent(this, PlaybackActivity.class);
         Bundle extras = new Bundle();
         extras.putParcelable(PlaybackFragment.EXTRA_SELECTED_SONG, track);

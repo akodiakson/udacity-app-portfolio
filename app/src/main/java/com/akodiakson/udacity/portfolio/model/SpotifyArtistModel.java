@@ -19,8 +19,11 @@ public class SpotifyArtistModel implements Parcelable {
     public SpotifyArtistModel(Artist artist){
         this.artistId = artist.id;
         this.artistName = artist.name;
-        this.image = artist.images.get(0).url;
-        this.imageDimension = artist.images.get(0).height;
+        List<Image> images = artist.images;
+        if(images.size() > 0){
+            this.image = images.get(0).url;
+            this.imageDimension = images.get(0).height;
+        }
     }
 
     @Override

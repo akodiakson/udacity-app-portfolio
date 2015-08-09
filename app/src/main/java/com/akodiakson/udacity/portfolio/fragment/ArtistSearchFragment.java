@@ -37,7 +37,6 @@ import kaaes.spotify.webapi.android.models.Pager;
 
 public class ArtistSearchFragment extends Fragment implements ArtistSearchTaskResultListener {
 
-    private static final int GRID_VIEW_SPAN_COUNT = 2;
     private RecyclerView.Adapter adapter;
     private List<Artist> artists = new ArrayList<>();
 
@@ -52,7 +51,7 @@ public class ArtistSearchFragment extends Fragment implements ArtistSearchTaskRe
         /**
          * Callback for when an item has been selected.
          */
-        public void onArtistSelected(SpotifyArtistModel spotifyArtistModel);
+        void onArtistSelected(SpotifyArtistModel spotifyArtistModel);
     }
 
     public ArtistSearchFragment() {
@@ -63,8 +62,8 @@ public class ArtistSearchFragment extends Fragment implements ArtistSearchTaskRe
                              Bundle savedInstanceState) {
         fragmentView = inflater.inflate(R.layout.fragment_artist_search, container, false);
 
-        Toolbar toolbar = (Toolbar) fragmentView.findViewById(R.id.toolbar);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+//        Toolbar toolbar = (Toolbar) fragmentView.findViewById(R.id.toolbar);
+//        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         RecyclerView recyclerView = (RecyclerView) fragmentView.findViewById(R.id.artist_search_recycler_view);
 
         adapter = new ArtistSearchResultAdapter((ArtistSearchActivity)getActivity(), artists);

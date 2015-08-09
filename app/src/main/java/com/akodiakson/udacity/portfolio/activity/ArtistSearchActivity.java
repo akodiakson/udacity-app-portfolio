@@ -2,9 +2,7 @@ package com.akodiakson.udacity.portfolio.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.Toast;
 
 import com.akodiakson.udacity.portfolio.R;
 import com.akodiakson.udacity.portfolio.fragment.ArtistSearchFragment;
@@ -58,7 +56,7 @@ public class ArtistSearchActivity extends AppCompatActivity implements ArtistSea
         } else {
             // In single-pane mode, simply start the detail activity
             // for the selected item ID.
-            Intent detailIntent = new Intent(this, ArtistTopTracksActivity.class);
+            Intent detailIntent = new Intent(this, TopTracksActivity.class);
             Bundle extras = new Bundle();
 
 

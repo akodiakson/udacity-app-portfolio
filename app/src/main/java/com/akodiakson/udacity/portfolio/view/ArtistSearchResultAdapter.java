@@ -24,6 +24,8 @@ public class ArtistSearchResultAdapter extends RecyclerView.Adapter<ArtistSearch
     private List<Artist> artistSearchResultList;
     private ArtistSearchFragment.Callbacks callbacks;
 
+    private int currentlySelectedPosition = -1;
+
     public ArtistSearchResultAdapter(ArtistSearchFragment.Callbacks callbacks, List<Artist> artistSearchResultList) {
         this.callbacks = callbacks;
         this.artistSearchResultList = artistSearchResultList;
@@ -37,7 +39,7 @@ public class ArtistSearchResultAdapter extends RecyclerView.Adapter<ArtistSearch
     }
 
     @Override
-    public void onBindViewHolder(final ArtistViewHolder holder, int position) {
+    public void onBindViewHolder(final ArtistViewHolder holder, final int position) {
         final Artist artist = artistSearchResultList.get(position);
         holder.artistName.setText(artist.name);
 
@@ -58,7 +60,6 @@ public class ArtistSearchResultAdapter extends RecyclerView.Adapter<ArtistSearch
         } else {
             holder.artistImage.setColorFilter(0);
             holder.artistImage.setImageDrawable(holder.itemView.getResources().getDrawable(R.drawable.ic_music_note_white_24dp, null));
-            image = new Image();
         }
 
         holder.artistImage.setBackgroundColor(context.getResources().getColor(R.color.colorLightPrimary));
@@ -66,10 +67,13 @@ public class ArtistSearchResultAdapter extends RecyclerView.Adapter<ArtistSearch
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                holder.itemView.setTag("selected");
                 SpotifyArtistModel parcelable = new SpotifyArtistModel(artist);
                 callbacks.onArtistSelected(parcelable);
             }
         });
+
+
     }
 
     @Override
@@ -81,6 +85,7 @@ public class ArtistSearchResultAdapter extends RecyclerView.Adapter<ArtistSearch
 
         public ImageView artistImage;
         public TextView artistName;
+        public View currentlySelectedIndicator;
 
         public ArtistViewHolder(View artistView) {
             super(artistView);
@@ -88,6 +93,7 @@ public class ArtistSearchResultAdapter extends RecyclerView.Adapter<ArtistSearch
             artistName = (TextView) artistView.findViewById(R.id.artistName);
             artistImage.setClipToOutline(true);
             artistImage.setOutlineProvider(new CircularOutlineProvider(false));
+            currentlySelectedIndicator = artistView.findViewById(R.id.currently_selected_artist_indicator);
         }
     }
 }
