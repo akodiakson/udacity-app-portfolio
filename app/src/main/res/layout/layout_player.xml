@@ -5,62 +5,65 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/playback_song_name"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp"
-        android:gravity="center_horizontal"
-        style="@android:style/TextAppearance.Material.Headline"
-        tools:text="Atlas"/>
+        android:orientation="vertical"
+        android:layout_marginTop="48dp"
+        android:layout_marginBottom="48dp">
 
 
-    <ImageView
-        android:id="@+id/playback_album_cover"
-        android:layout_width="240dp"
-        android:layout_height="240dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="64dp" />
+        <ImageView
+            android:id="@+id/playback_album_cover"
+            android:layout_width="240dp"
+            android:layout_height="240dp"
+            android:layout_gravity="center_horizontal" />
+
+
+
+
+    </LinearLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:gravity="center_horizontal"
         android:orientation="vertical">
 
+        <TextView
+            android:id="@+id/playback_song_name"
+            style="@android:style/TextAppearance.Material.Headline"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="56dp"
+            tools:text="Atlas" />
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/playback_artist_name"
+            style="@android:style/TextAppearance.Material.Body2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
-            android:layout_marginTop="24dp"
-            android:orientation="vertical">
+            android:layout_marginStart="56dp"
+            tools:text="Battles" />
 
-            <TextView
-                android:id="@+id/playback_artist_name"
-                style="@android:style/TextAppearance.Material.Body2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="Battles" />
-
-            <TextView
-                android:id="@+id/playback_track_album_name"
-                style="@android:style/TextAppearance.Material.Caption"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="Mirrored" />
-
-        </LinearLayout>
+        <TextView
+            android:id="@+id/playback_track_album_name"
+            style="@android:style/TextAppearance.Material.Caption"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="56dp"
+            android:layout_marginBottom="32dp"
+            tools:text="Mirrored" />
 
         <SeekBar
             android:id="@+id/playback_seek_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:max="30"
             android:layout_marginLeft="32dp"
-            android:layout_marginRight="32dp" />
+            android:layout_marginRight="32dp"
+            android:max="30" />
 
 
         <include
