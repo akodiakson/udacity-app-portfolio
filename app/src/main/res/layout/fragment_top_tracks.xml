@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.akodiakson.udacity.portfolio.activity.ArtistTopTracksActivity">
+    tools:context="com.akodiakson.udacity.portfolio.activity.TopTracksActivity">
 
     <LinearLayout
         android:id="@+id/topTracksIdentifier"

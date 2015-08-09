@@ -2,7 +2,6 @@ package com.akodiakson.udacity.portfolio.fragment;
 
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
@@ -19,10 +18,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.akodiakson.udacity.portfolio.R;
-import com.akodiakson.udacity.portfolio.activity.ArtistTopTracksActivity;
 import com.akodiakson.udacity.portfolio.model.SpotifyArtistModel;
 import com.akodiakson.udacity.portfolio.model.TrackModel;
 import com.akodiakson.udacity.portfolio.network.TopTracksTask;
@@ -38,7 +35,6 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
-import kaaes.spotify.webapi.android.models.Image;
 import kaaes.spotify.webapi.android.models.Track;
 import kaaes.spotify.webapi.android.models.Tracks;
 
@@ -70,6 +66,10 @@ public class TopTracksFragment extends Fragment implements OnTopTracksResultList
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         //TODO -- Show empty state view on tablet?
+        if(savedInstanceState != null && savedInstanceState.containsKey(EXTRA_SPOTIFY_ARTIST)){
+            spotifyArtistModel = savedInstanceState.getParcelable(EXTRA_SPOTIFY_ARTIST);
+        }
+
         return inflater.inflate(R.layout.fragment_top_tracks, container, false);
     }
 
@@ -84,7 +84,10 @@ public class TopTracksFragment extends Fragment implements OnTopTracksResultList
         super.onResume();
 
         Bundle arguments = getActivity().getIntent().getExtras();
-        if (arguments != null) {
+        if(spotifyArtistModel != null){
+
+        }
+        else if (arguments != null) {
             //you came from a single-pane view, via activity
             spotifyArtistModel = arguments.getParcelable(EXTRA_SPOTIFY_ARTIST);
         } else {
@@ -97,6 +100,12 @@ public class TopTracksFragment extends Fragment implements OnTopTracksResultList
         if (topTracks.isEmpty()) {
             searchArtistTopTracks();
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(EXTRA_SPOTIFY_ARTIST, spotifyArtistModel);
     }
 
     private void setupToolbar() {

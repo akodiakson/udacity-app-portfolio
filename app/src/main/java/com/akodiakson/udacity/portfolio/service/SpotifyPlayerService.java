@@ -31,7 +31,6 @@ public class SpotifyPlayerService extends Service {
         public void run() {
             if (mMediaPlayer != null && mMediaPlayer.isPlaying()) {
                 BusProvider.getInstance().post(new AdvanceSeekBarEvent(mMediaPlayer.getCurrentPosition()));
-
             }
             handler.postDelayed(run, 100);
         }
@@ -48,6 +47,9 @@ public class SpotifyPlayerService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        if(intent == null){
+            return super.onStartCommand(intent, flags, startId);
+        }
         final String url = intent.getStringExtra(EXTRA_TRACK_URL);
         System.out.println("SpotifyPlayerService->onStartCommand" + " " + url);
 

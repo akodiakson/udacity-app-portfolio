@@ -67,6 +67,12 @@ public class PlaybackFragment extends DialogFragment {
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         BusProvider.getInstance().register(this);
@@ -101,6 +107,13 @@ public class PlaybackFragment extends DialogFragment {
         int millisToAdvance = event.getMillisToAdvance();
         SeekBar seekBar = (SeekBar) getView().findViewById(R.id.playback_seek_bar);
         seekBar.setProgress(millisToAdvance / 1000);
+        TextView duration = (TextView) getView().findViewById(R.id.playback_track_duration);
+        DateFormat df = new SimpleDateFormat("m:ss");
+
+        String formattedCurrent = df.format(millisToAdvance);
+        String formattedDuration = df.format(mTrack.duration);
+
+        duration.setText(formattedCurrent + " | " + formattedDuration);
     }
 
     @Subscribe
