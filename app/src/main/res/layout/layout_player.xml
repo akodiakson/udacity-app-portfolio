@@ -45,6 +45,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="56dp"
+            android:layout_marginEnd="56dp"
             android:ellipsize="marquee"
             android:maxLines="2"
             android:paddingTop="16dp"
@@ -63,9 +64,16 @@
             style="@android:style/TextAppearance.Material.Caption"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="32dp"
             android:layout_marginStart="56dp"
             tools:text="Mirrored" />
+        <TextView
+            android:id="@+id/playback_track_duration"
+            style="@android:style/TextAppearance.Material.Caption"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
+            android:layout_marginStart="56dp"
+            tools:text="3:54"/>
 
         <SeekBar
             android:id="@+id/playback_seek_bar"

@@ -12,6 +12,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.graphics.Palette;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +31,9 @@ import com.squareup.otto.Subscribe;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
+import java.text.DateFormat;
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,7 +71,6 @@ public class PlaybackFragment extends DialogFragment {
         super.onResume();
         BusProvider.getInstance().register(this);
         populateTrackModel();
-        setupToolbar();
         setupAlbumArt();
         setupAlbumDetails();
         setupPlaybackControls();
@@ -112,10 +115,6 @@ public class PlaybackFragment extends DialogFragment {
 
         this.mTrack = track;
         this.mTopTracks = topTracks;
-    }
-
-    private void setupToolbar(){
-        ActionBar actionBar = getActivity().getActionBar();
     }
 
     private void advanceToNextTrack() {
@@ -190,10 +189,14 @@ public class PlaybackFragment extends DialogFragment {
         TextView songName = (TextView) view.findViewById(R.id.playback_song_name);
         TextView artistName = (TextView) view.findViewById(R.id.playback_artist_name);
         TextView albumName = (TextView) view.findViewById(R.id.playback_track_album_name);
+        TextView duration = (TextView) view.findViewById(R.id.playback_track_duration);
+        DateFormat df = new SimpleDateFormat("m:ss");
+        String formatted = df.format(mTrack.duration);
 
         songName.setText(mTrack.name);
         artistName.setText(mTrack.artistName);
         albumName.setText(mTrack.albumName);
+        duration.setText(formatted);
 
     }
 
