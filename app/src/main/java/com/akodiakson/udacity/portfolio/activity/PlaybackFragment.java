@@ -1,7 +1,6 @@
 package com.akodiakson.udacity.portfolio.activity;
 
 
-
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.ColorFilter;
@@ -22,6 +21,7 @@ import com.akodiakson.udacity.portfolio.R;
 import com.akodiakson.udacity.portfolio.application.BusProvider;
 import com.akodiakson.udacity.portfolio.model.TrackModel;
 import com.akodiakson.udacity.portfolio.service.SpotifyPlayerService;
+import com.akodiakson.udacity.portfolio.util.BlurTransformation;
 import com.squareup.otto.Subscribe;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
@@ -65,29 +65,30 @@ public class PlaybackFragment extends Fragment {
     }
 
     @Subscribe
-    public void onPlayerPlaying(SpotifyPlayerService.PlayerPlayingEvent event){
+    public void onPlayerPlaying(SpotifyPlayerService.PlayerPlayingEvent event) {
         ImageView playPause = (ImageView) getView().findViewById(R.id.player_play_pause);
         playPause.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_media_pause, null));
     }
 
     @Subscribe
-    public void onPlayerPaused(SpotifyPlayerService.PlayerPausedEvent event){
+    public void onPlayerPaused(SpotifyPlayerService.PlayerPausedEvent event) {
         ImageView playPause = (ImageView) getView().findViewById(R.id.player_play_pause);
         playPause.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_media_play, null));
     }
 
     @Subscribe
-    public void onSeekBarAdvance(SpotifyPlayerService.AdvanceSeekBarEvent event){
+    public void onSeekBarAdvance(SpotifyPlayerService.AdvanceSeekBarEvent event) {
         int millisToAdvance = event.getMillisToAdvance();
         SeekBar seekBar = (SeekBar) getView().findViewById(R.id.playback_seek_bar);
         seekBar.setProgress(millisToAdvance / 1000);
     }
 
     @Subscribe
-    public void onSongCompleted(SpotifyPlayerService.SongCompletedEvent event){
+    public void onSongCompleted(SpotifyPlayerService.SongCompletedEvent event) {
         advanceToNextTrack();
     }
-    private void populateTrackModel(){
+
+    private void populateTrackModel() {
         Bundle arguments = getActivity().getIntent().getExtras();
         TrackModel track = arguments.getParcelable(EXTRA_SELECTED_SONG);
         List<TrackModel> topTracks = arguments.getParcelableArrayList(EXTRA_TOP_TRACKS);
@@ -96,7 +97,7 @@ public class PlaybackFragment extends Fragment {
         this.mTopTracks = topTracks;
     }
 
-    private void advanceToNextTrack(){
+    private void advanceToNextTrack() {
         int currentTrackPosition = getCurrentTrackPosition();
         int nextPosition = (currentTrackPosition == mTopTracks.size() - 1) ? 0 : currentTrackPosition + 1;
         TrackModel nextTrack = mTopTracks.get(nextPosition);
@@ -109,9 +110,9 @@ public class PlaybackFragment extends Fragment {
         playSelectedTrack();
     }
 
-    private void goBackToPreviousTrack(){
+    private void goBackToPreviousTrack() {
         int currentTrackPosition = getCurrentTrackPosition();
-        int nextPosition = (currentTrackPosition == 0) ? mTopTracks.size() -1 : currentTrackPosition -1;
+        int nextPosition = (currentTrackPosition == 0) ? mTopTracks.size() - 1 : currentTrackPosition - 1;
         TrackModel nextTrack = mTopTracks.get(nextPosition);
         mTrack = nextTrack;
         //Update the UI for the next track
@@ -123,21 +124,22 @@ public class PlaybackFragment extends Fragment {
     }
 
     private int getCurrentTrackPosition() {
-        for(int i = 0; i < mTopTracks.size(); i++){
-            if(mTrack.previewUrl.equals(mTopTracks.get(i).previewUrl)){
+        for (int i = 0; i < mTopTracks.size(); i++) {
+            if (mTrack.previewUrl.equals(mTopTracks.get(i).previewUrl)) {
                 return i;
             }
         }
         return -1;
     }
 
-    private void setupAlbumArt(){
+    private void setupAlbumArt() {
         final ImageView albumArt = (ImageView) getView().findViewById(R.id.playback_album_cover);
         //TODO -- load image from picasso
         Picasso.with(getActivity())
                 .load(mTrack.albumImage)
-                .into(albumArt, new Callback.EmptyCallback(){
-                    @Override public void onSuccess() {
+                .into(albumArt, new Callback.EmptyCallback() {
+                    @Override
+                    public void onSuccess() {
                         //Source : http://jakewharton.com/coercing-picasso-to-play-with-palette/
                         Bitmap bitmap = ((BitmapDrawable) albumArt.getDrawable()).getBitmap(); // Ew!
                         Palette palette = Palette.from(bitmap).generate();
@@ -152,9 +154,16 @@ public class PlaybackFragment extends Fragment {
                         // TODO apply palette to text views, backgrounds, etc.
                     }
                 });
+
+        ImageView background = (ImageView) getView().findViewById(R.id.playback_background);
+        Picasso.with(getActivity())
+                .load(mTrack.albumImage)
+                .transform(new BlurTransformation(getActivity()))
+                .fit()
+                .into(background);
     }
 
-    private void setupAlbumDetails(){
+    private void setupAlbumDetails() {
 
         View view = getView();
         TextView songName = (TextView) view.findViewById(R.id.playback_song_name);
@@ -167,7 +176,7 @@ public class PlaybackFragment extends Fragment {
 
     }
 
-    private void setupPlaybackControls(){
+    private void setupPlaybackControls() {
         SeekBar seekBar = (SeekBar) getView().findViewById(R.id.playback_seek_bar);
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override

@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">My App Portfolio</string>
 
-    <string name="demo_artist_name">Battles</string>
+    <string name="demo_artist_name">flying</string>
     <string name="artist_search_hint">Search for an artist</string>
     <string name="artist_image_content_description">Artist image</string>
     <string name="error_no_artists_found">Too obscure, hipster</string>
