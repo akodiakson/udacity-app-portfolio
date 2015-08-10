@@ -2,6 +2,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.akodiakson.udacity.portfolio.activity.PlaybackActivity">
-    <item android:id="@+id/action_settings" android:title="@string/action_settings"
-        android:orderInCategory="100" app:showAsAction="never" />
+    <item android:id="@+id/action_now_playing" android:title="@string/action_now_playing"
+        android:icon="@drawable/ic_music_note_white_24dp"
+        android:orderInCategory="100" app:showAsAction="always" />
 </menu>

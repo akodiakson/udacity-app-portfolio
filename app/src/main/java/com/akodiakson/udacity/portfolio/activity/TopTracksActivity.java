@@ -6,14 +6,11 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.akodiakson.udacity.portfolio.R;
+import com.akodiakson.udacity.portfolio.fragment.PlaybackFragment;
 import com.akodiakson.udacity.portfolio.fragment.TopTracksFragment;
-import com.akodiakson.udacity.portfolio.model.SpotifyArtistModel;
 import com.akodiakson.udacity.portfolio.model.TrackModel;
 
 import java.util.ArrayList;
-import java.util.List;
-
-import kaaes.spotify.webapi.android.models.Track;
 
 public class TopTracksActivity extends AppCompatActivity implements TopTracksFragment.Callbacks{
 
@@ -26,11 +23,7 @@ public class TopTracksActivity extends AppCompatActivity implements TopTracksFra
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
             Bundle arguments = new Bundle();
-
-            TopTracksFragment fragment2 = (TopTracksFragment) getSupportFragmentManager().findFragmentById(R.id.top_tracks_content_frame_container);
-
-
-                    Intent receivedIntent = getIntent();
+            Intent receivedIntent = getIntent();
             if(receivedIntent != null && receivedIntent.getExtras() != null){
                 arguments.putParcelable(TopTracksFragment.EXTRA_SPOTIFY_ARTIST, receivedIntent.getParcelableExtra(TopTracksFragment.EXTRA_SPOTIFY_ARTIST));
             }

@@ -23,8 +23,8 @@
 
         <ImageView
             android:id="@+id/playback_album_cover"
-            android:layout_width="240dp"
-            android:layout_height="240dp"
+            android:layout_width="192dp"
+            android:layout_height="192dp"
             android:layout_gravity="center_horizontal" />
 
 
@@ -54,7 +54,9 @@
         <TextView
             android:id="@+id/playback_artist_name"
             style="@android:style/TextAppearance.Material.Body2"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_marginEnd="56dp"
+            android:maxLines="2"
             android:layout_height="wrap_content"
             android:layout_marginStart="56dp"
             tools:text="Battles" />
@@ -62,7 +64,9 @@
         <TextView
             android:id="@+id/playback_track_album_name"
             style="@android:style/TextAppearance.Material.Caption"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_marginEnd="56dp"
+            android:maxLines="2"
             android:layout_height="wrap_content"
             android:layout_marginStart="56dp"
             tools:text="Mirrored" />
@@ -82,6 +86,8 @@
             android:layout_centerHorizontal="true"
             android:layout_marginLeft="32dp"
             android:layout_marginRight="32dp"
+            android:thumbTint="@color/colorAccent"
+            android:progressTint="@color/colorAccent"
             android:max="30" />
 
 

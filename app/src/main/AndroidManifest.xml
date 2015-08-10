@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.akodiakson.udacity.portfolio" >
+    package="com.akodiakson.udacity.portfolio">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <!-- TODO - Remove for prod build. Needed only for Leak Canary. -->
@@ -13,10 +13,11 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/MyTheme" >
+        android:theme="@style/MyTheme">
         <activity
             android:name=".activity.ArtistSearchActivity"
-            android:label="@string/title_activity_artist_search">
+            android:label="@string/title_activity_artist_search"
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -27,7 +28,7 @@
             android:name=".activity.TopTracksActivity"
             android:label="@string/title_activity_artist_top_tracks"
             android:launchMode="singleTop"
-            android:parentActivityName=".activity.ArtistSearchActivity" >
+            android:parentActivityName=".activity.ArtistSearchActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.akodiakson.udacity.portfolio.activity.ArtistSearchActivity" />
@@ -35,6 +36,7 @@
         <activity
             android:name=".activity.PlaybackActivity"
             android:label="@string/title_activity_playback"
+            android:launchMode="singleTop"
             android:parentActivityName=".activity.TopTracksActivity"
             android:theme="@style/MyDialogTheme">
             <meta-data
@@ -45,8 +47,7 @@
         <service
             android:name=".service.SpotifyPlayerService"
             android:enabled="true"
-            android:exported="true" >
-        </service>
+            android:exported="true"></service>
     </application>
 
 </manifest>

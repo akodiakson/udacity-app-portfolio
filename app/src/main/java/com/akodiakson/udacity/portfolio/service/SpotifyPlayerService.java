@@ -3,21 +3,27 @@ package com.akodiakson.udacity.portfolio.service;
 import android.app.Service;
 import android.content.Intent;
 import android.media.MediaPlayer;
-import android.media.TimedText;
 import android.os.Handler;
 import android.os.IBinder;
 
+import com.akodiakson.udacity.portfolio.PortfolioApplication;
+import com.akodiakson.udacity.portfolio.fragment.PlaybackFragment;
 import com.akodiakson.udacity.portfolio.application.BusProvider;
-import com.squareup.otto.Bus;
+import com.akodiakson.udacity.portfolio.model.TrackModel;
 
 import java.io.IOException;
+import java.util.List;
 
 public class SpotifyPlayerService extends Service {
 
     //TODO -- create actions here for play/pause, scrub, next/previous
     public static final String EXTRA_TRACK_URL = "EXTRA_TRACK_URL";
     public static final String ACTION_SEEK = "ACTION_SEEK";
+    public static final String ACTION_CHECK_IF_PLAYING = "ACTION_CHECK_IF_PLAYING";
+
     public static final String EXTRA_MILLIS_TO_SEEK = "EXTRA_MILLIS_TO_SEEK";
+    public static final String ACTION_RESTORE_NOW_PLAYING = "ACTION_RESTORE_NOW_PLAYING";
+    public static final String EXTRA_DIRECTIVE = "EXTRA_DIRECTIVE";
 
     private MediaPlayer mMediaPlayer;
     private boolean mIsCurrentlyPlaying = false;
@@ -25,6 +31,10 @@ public class SpotifyPlayerService extends Service {
     private String mCurrentlyPlayingUrl;
 
     private Handler handler = new Handler();
+
+    //For recreating from now playing
+    private TrackModel mTrack;
+    private List<TrackModel> mTopTracks;
 
     Runnable run = new Runnable() {
         @Override
@@ -58,16 +68,34 @@ public class SpotifyPlayerService extends Service {
         if(ACTION_SEEK.equals(intent.getAction())){
             int millisToSeek = intent.getIntExtra(SpotifyPlayerService.EXTRA_MILLIS_TO_SEEK, 0);
             mMediaPlayer.seekTo(millisToSeek);
-        } else {
+        } else if(ACTION_CHECK_IF_PLAYING.equals(intent.getAction())){
+            BusProvider.getInstance().post(new IsPlayingStatusEvent(mMediaPlayer != null && mMediaPlayer.isPlaying()));
+            return super.onStartCommand(intent, flags, startId);
+        } else if(ACTION_RESTORE_NOW_PLAYING.equals(intent.getAction())){
+            PortfolioApplication app = (PortfolioApplication) getApplication();
+            BusProvider.getInstance().post(new RestorePlayingViewEvent(app.getCurrentlyPlayingTrack(), app.getTopTracks()));
+            return super.onStartCommand(intent, flags, startId);
+        }
+        else {
+            TrackModel track = intent.getExtras().getParcelable(PlaybackFragment.EXTRA_SELECTED_SONG);
+            List<TrackModel> topTracks = intent.getExtras().getParcelableArrayList(PlaybackFragment.EXTRA_TOP_TRACKS);
+
+            this.mTrack = track;
+            this.mTopTracks = topTracks;
 
             if (mCurrentlyPlayingUrl == null || url.equals(mCurrentlyPlayingUrl)) {
                 if (!mIsCurrentlyPlaying && !mIsPaused) {
+                    //Start fresh
                     startPlayback(url);
                 } else if (mIsPaused) {
+                    //Resume
                     mMediaPlayer.start();
                     markAsPlaying();
                 } else {
-                    pausePlayback();
+                    String directive = intent.getStringExtra(EXTRA_DIRECTIVE);
+                    if("pause".equals(directive)){
+                        pausePlayback();
+                    }
                 }
             } else {
                 stopPlayback();
@@ -102,8 +130,6 @@ public class SpotifyPlayerService extends Service {
         mMediaPlayer = null;
         mMediaPlayer = getMediaPlayer();
     }
-
-
 
     private void startPlayback(final String url) {
         try {
@@ -179,6 +205,35 @@ public class SpotifyPlayerService extends Service {
 
         public int getMillisToAdvance() {
             return millisToAdvance;
+        }
+    }
+
+    public static final class IsPlayingStatusEvent {
+        private boolean isPlaying;
+        public IsPlayingStatusEvent(boolean isPlaying) {
+            this.isPlaying = isPlaying;
+        }
+
+        public boolean isPlaying() {
+            return isPlaying;
+        }
+    }
+
+    public static final class RestorePlayingViewEvent{
+        private TrackModel mTrack;
+        private List<TrackModel> mTopTracks;
+
+        public RestorePlayingViewEvent(TrackModel track, List<TrackModel> topTracks){
+            this.mTrack = track;
+            this.mTopTracks = topTracks;
+        }
+
+        public TrackModel getmTrack() {
+            return mTrack;
+        }
+
+        public List<TrackModel> getmTopTracks() {
+            return mTopTracks;
         }
     }
 

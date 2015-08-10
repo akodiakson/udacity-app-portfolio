@@ -1,10 +1,11 @@
-package com.akodiakson.udacity.portfolio.activity;
+package com.akodiakson.udacity.portfolio.fragment;
 
 
 import android.app.ActionBar;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.ColorFilter;
 import android.graphics.PorterDuff;
@@ -22,6 +23,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.akodiakson.udacity.portfolio.PortfolioApplication;
 import com.akodiakson.udacity.portfolio.R;
 import com.akodiakson.udacity.portfolio.application.BusProvider;
 import com.akodiakson.udacity.portfolio.model.TrackModel;
@@ -41,6 +43,8 @@ public class PlaybackFragment extends DialogFragment {
 
     public static final String EXTRA_SELECTED_SONG = "EXTRA_SELECTED_SONG";
     public static final String EXTRA_TOP_TRACKS = "EXTRA_TOP_TRACKS";
+    public static final int MILLIS_PER_SECOND = 1000;
+    public static final String TRACK_TIME_FORMAT = "m:ss";
 
     private TrackModel mTrack;
     private List<TrackModel> mTopTracks;
@@ -84,6 +88,7 @@ public class PlaybackFragment extends DialogFragment {
         playSelectedTrack();
     }
 
+
     @Override
     public void onPause() {
         super.onPause();
@@ -93,12 +98,14 @@ public class PlaybackFragment extends DialogFragment {
     @Subscribe
     public void onPlayerPlaying(SpotifyPlayerService.PlayerPlayingEvent event) {
         ImageView playPause = (ImageView) getView().findViewById(R.id.player_play_pause);
+        playPause.setTag("showPause");
         playPause.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_media_pause, null));
     }
 
     @Subscribe
     public void onPlayerPaused(SpotifyPlayerService.PlayerPausedEvent event) {
         ImageView playPause = (ImageView) getView().findViewById(R.id.player_play_pause);
+        playPause.setTag("showPlay");
         playPause.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_media_play, null));
     }
 
@@ -108,7 +115,7 @@ public class PlaybackFragment extends DialogFragment {
         SeekBar seekBar = (SeekBar) getView().findViewById(R.id.playback_seek_bar);
         seekBar.setProgress(millisToAdvance / 1000);
         TextView duration = (TextView) getView().findViewById(R.id.playback_track_duration);
-        DateFormat df = new SimpleDateFormat("m:ss");
+        DateFormat df = new SimpleDateFormat(TRACK_TIME_FORMAT);
 
         String formattedCurrent = df.format(millisToAdvance);
         String formattedDuration = df.format(mTrack.duration);
@@ -167,26 +174,9 @@ public class PlaybackFragment extends DialogFragment {
 
     private void setupAlbumArt() {
         final ImageView albumArt = (ImageView) getView().findViewById(R.id.playback_album_cover);
-        //TODO -- load image from picasso
         Picasso.with(getActivity())
                 .load(mTrack.albumImage)
-                .into(albumArt, new Callback.EmptyCallback() {
-                    @Override
-                    public void onSuccess() {
-                        //Source : http://jakewharton.com/coercing-picasso-to-play-with-palette/
-                        Bitmap bitmap = ((BitmapDrawable) albumArt.getDrawable()).getBitmap(); // Ew!
-                        Palette palette = Palette.from(bitmap).generate();
-                        final int vibrantColor = palette.getVibrantColor(R.color.colorAccent);
-                        final SeekBar seekBar = (SeekBar) getView().findViewById(R.id.playback_seek_bar);
-                        seekBar.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                seekBar.getThumb().setColorFilter(vibrantColor, PorterDuff.Mode.MULTIPLY);
-                            }
-                        }, 200);
-                        // TODO apply palette to text views, backgrounds, etc.
-                    }
-                });
+                .into(albumArt);
 
         ImageView background = (ImageView) getView().findViewById(R.id.playback_background);
         Picasso.with(getActivity())
@@ -203,7 +193,7 @@ public class PlaybackFragment extends DialogFragment {
         TextView artistName = (TextView) view.findViewById(R.id.playback_artist_name);
         TextView albumName = (TextView) view.findViewById(R.id.playback_track_album_name);
         TextView duration = (TextView) view.findViewById(R.id.playback_track_duration);
-        DateFormat df = new SimpleDateFormat("m:ss");
+        DateFormat df = new SimpleDateFormat(TRACK_TIME_FORMAT);
         String formatted = df.format(mTrack.duration);
 
         songName.setText(mTrack.name);
@@ -215,6 +205,7 @@ public class PlaybackFragment extends DialogFragment {
 
     private void setupPlaybackControls() {
         SeekBar seekBar = (SeekBar) getView().findViewById(R.id.playback_seek_bar);
+
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -228,8 +219,7 @@ public class PlaybackFragment extends DialogFragment {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                //TODO -- Here, they've let go, so advance the track x ms
-                int millis_to_advance = seekBar.getProgress() * 1000;
+                int millis_to_advance = seekBar.getProgress() * MILLIS_PER_SECOND;
                 Intent intent = new Intent(getActivity(), SpotifyPlayerService.class);
                 intent.setAction(SpotifyPlayerService.ACTION_SEEK);
                 intent.putExtra(SpotifyPlayerService.EXTRA_MILLIS_TO_SEEK, millis_to_advance);
@@ -257,10 +247,26 @@ public class PlaybackFragment extends DialogFragment {
     }
 
     private void playSelectedTrack() {
+        storeTrackData();
+
+        ImageView playPause = (ImageView) getView().findViewById(R.id.player_play_pause);
+        Object tag = playPause.getTag();
+        String extra = null;
+        if (tag != null && "showPause".equals(tag.toString())) {
+            extra = "pause";
+        }
+
         String url = mTrack.previewUrl; // your URL here
         Intent intent = new Intent(getActivity(), SpotifyPlayerService.class);
         intent.putExtra(SpotifyPlayerService.EXTRA_TRACK_URL, url);
+        intent.putExtra(SpotifyPlayerService.EXTRA_DIRECTIVE, extra);
         getActivity().startService(intent);
+    }
+
+    private void storeTrackData() {
+        PortfolioApplication app = (PortfolioApplication) getActivity().getApplication();
+        app.setCurrentlyPlayingTrack(mTrack);
+        app.setTopTracks(mTopTracks);
     }
 
     private View.OnClickListener onPreviousTapped() {
