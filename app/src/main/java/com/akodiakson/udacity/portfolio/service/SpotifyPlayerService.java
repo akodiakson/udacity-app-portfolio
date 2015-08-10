@@ -3,15 +3,13 @@ package com.akodiakson.udacity.portfolio.service;
 import android.app.Service;
 import android.content.Intent;
 import android.media.MediaPlayer;
-import android.media.TimedText;
 import android.os.Handler;
 import android.os.IBinder;
 
 import com.akodiakson.udacity.portfolio.PortfolioApplication;
-import com.akodiakson.udacity.portfolio.activity.PlaybackFragment;
+import com.akodiakson.udacity.portfolio.fragment.PlaybackFragment;
 import com.akodiakson.udacity.portfolio.application.BusProvider;
 import com.akodiakson.udacity.portfolio.model.TrackModel;
-import com.squareup.otto.Bus;
 
 import java.io.IOException;
 import java.util.List;
@@ -75,7 +73,7 @@ public class SpotifyPlayerService extends Service {
             return super.onStartCommand(intent, flags, startId);
         } else if(ACTION_RESTORE_NOW_PLAYING.equals(intent.getAction())){
             PortfolioApplication app = (PortfolioApplication) getApplication();
-            BusProvider.getInstance().post(new RestorePlayingViewEvent(app.getCurrentlyPlayingTrack(), mTopTracks));
+            BusProvider.getInstance().post(new RestorePlayingViewEvent(app.getCurrentlyPlayingTrack(), app.getTopTracks()));
             return super.onStartCommand(intent, flags, startId);
         }
         else {

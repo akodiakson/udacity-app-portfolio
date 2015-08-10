@@ -36,6 +36,7 @@
         <activity
             android:name=".activity.PlaybackActivity"
             android:label="@string/title_activity_playback"
+            android:launchMode="singleTop"
             android:parentActivityName=".activity.TopTracksActivity"
             android:theme="@style/MyDialogTheme">
             <meta-data

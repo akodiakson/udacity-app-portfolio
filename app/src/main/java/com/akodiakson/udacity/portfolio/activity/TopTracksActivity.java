@@ -6,14 +6,11 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.akodiakson.udacity.portfolio.R;
+import com.akodiakson.udacity.portfolio.fragment.PlaybackFragment;
 import com.akodiakson.udacity.portfolio.fragment.TopTracksFragment;
-import com.akodiakson.udacity.portfolio.model.SpotifyArtistModel;
 import com.akodiakson.udacity.portfolio.model.TrackModel;
 
 import java.util.ArrayList;
-import java.util.List;
-
-import kaaes.spotify.webapi.android.models.Track;
 
 public class TopTracksActivity extends AppCompatActivity implements TopTracksFragment.Callbacks{
 
