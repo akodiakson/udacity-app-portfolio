@@ -5,6 +5,7 @@ import android.app.ActionBar;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.ColorFilter;
 import android.graphics.PorterDuff;
@@ -22,6 +23,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.akodiakson.udacity.portfolio.PortfolioApplication;
 import com.akodiakson.udacity.portfolio.R;
 import com.akodiakson.udacity.portfolio.application.BusProvider;
 import com.akodiakson.udacity.portfolio.model.TrackModel;
@@ -84,6 +86,7 @@ public class PlaybackFragment extends DialogFragment {
         playSelectedTrack();
     }
 
+
     @Override
     public void onPause() {
         super.onPause();
@@ -93,12 +96,14 @@ public class PlaybackFragment extends DialogFragment {
     @Subscribe
     public void onPlayerPlaying(SpotifyPlayerService.PlayerPlayingEvent event) {
         ImageView playPause = (ImageView) getView().findViewById(R.id.player_play_pause);
+        playPause.setTag("showPause");
         playPause.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_media_pause, null));
     }
 
     @Subscribe
     public void onPlayerPaused(SpotifyPlayerService.PlayerPausedEvent event) {
         ImageView playPause = (ImageView) getView().findViewById(R.id.player_play_pause);
+        playPause.setTag("showPlay");
         playPause.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_media_play, null));
     }
 
@@ -257,10 +262,25 @@ public class PlaybackFragment extends DialogFragment {
     }
 
     private void playSelectedTrack() {
+        storeTrackData();
+
+        ImageView playPause = (ImageView) getView().findViewById(R.id.player_play_pause);
+        Object tag = playPause.getTag();
+        String extra = null;
+        if (tag != null && "showPause".equals(tag.toString())) {
+            extra = "pause";
+        }
+
         String url = mTrack.previewUrl; // your URL here
         Intent intent = new Intent(getActivity(), SpotifyPlayerService.class);
         intent.putExtra(SpotifyPlayerService.EXTRA_TRACK_URL, url);
+        intent.putExtra(SpotifyPlayerService.EXTRA_DIRECTIVE, extra);
         getActivity().startService(intent);
+    }
+
+    private void storeTrackData() {
+        PortfolioApplication app = (PortfolioApplication) getActivity().getApplication();
+        app.setCurrentlyPlayingTrack(mTrack);
     }
 
     private View.OnClickListener onPreviousTapped() {

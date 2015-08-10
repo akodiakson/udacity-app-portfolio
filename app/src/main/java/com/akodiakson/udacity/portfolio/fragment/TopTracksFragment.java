@@ -1,13 +1,16 @@
 package com.akodiakson.udacity.portfolio.fragment;
 
 
+import android.app.ActivityManager;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
@@ -15,19 +18,28 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.akodiakson.udacity.portfolio.R;
+import com.akodiakson.udacity.portfolio.activity.ArtistSearchActivity;
+import com.akodiakson.udacity.portfolio.activity.TopTracksActivity;
+import com.akodiakson.udacity.portfolio.application.BusProvider;
 import com.akodiakson.udacity.portfolio.model.SpotifyArtistModel;
 import com.akodiakson.udacity.portfolio.model.TrackModel;
 import com.akodiakson.udacity.portfolio.network.TopTracksTask;
+import com.akodiakson.udacity.portfolio.service.SpotifyPlayerService;
 import com.akodiakson.udacity.portfolio.util.DimensUtil;
 import com.akodiakson.udacity.portfolio.util.NetworkUtil;
+import com.akodiakson.udacity.portfolio.util.ServiceStatusUtil;
 import com.akodiakson.udacity.portfolio.util.StringUtil;
 import com.akodiakson.udacity.portfolio.view.ArtistTopTracksAdapter;
 import com.akodiakson.udacity.portfolio.view.CircularOutlineProvider;
+import com.squareup.otto.Subscribe;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -47,6 +59,7 @@ public class TopTracksFragment extends Fragment implements OnTopTracksResultList
 
     private Toolbar toolbar;
 
+    private Menu mMenu;
     private SpotifyArtistModel spotifyArtistModel;
 
     //TODO -- this should pass song-related info
@@ -59,6 +72,12 @@ public class TopTracksFragment extends Fragment implements OnTopTracksResultList
 
     public TopTracksFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onDestroy() {
+        System.out.println("asdf --> TTF DESTROY");
+        super.onDestroy();
     }
 
     @Override
@@ -77,11 +96,42 @@ public class TopTracksFragment extends Fragment implements OnTopTracksResultList
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        if(menu.findItem(R.id.action_now_playing) == null)
+        inflater.inflate(R.menu.menu_playback, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(ServiceStatusUtil.isMyServiceRunning(new WeakReference<Context>(getActivity()))){
+            Intent intent = new Intent(getActivity(), SpotifyPlayerService.class);
+            intent.setAction(SpotifyPlayerService.ACTION_RESTORE_NOW_PLAYING);
+            getActivity().startService(intent);
+
+        } else {
+            Snackbar
+                    .make(getView().findViewById(R.id.artist_top_tracks_recycler_view), "Nothing playing yet", Snackbar.LENGTH_LONG)
+                    .show();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        BusProvider.getInstance().unregister(this);
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        BusProvider.getInstance().register(this);
 
         Bundle arguments = getActivity().getIntent().getExtras();
         if(spotifyArtistModel == null){
@@ -99,7 +149,12 @@ public class TopTracksFragment extends Fragment implements OnTopTracksResultList
         if (topTracks.isEmpty()) {
             searchArtistTopTracks();
         }
+
     }
+
+
+
+
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
@@ -181,6 +236,11 @@ public class TopTracksFragment extends Fragment implements OnTopTracksResultList
         }
         topTracks.addAll(tracksList);
         adapter.notifyDataSetChanged();
+    }
+
+    @Subscribe
+    public void onRestorePlayerEvent(SpotifyPlayerService.RestorePlayingViewEvent event){
+        ((TopTracksActivity)getActivity()).onArtistTrackSelectedForPlayback(event.getmTrack(), (ArrayList) event.getmTopTracks());
     }
 
 }

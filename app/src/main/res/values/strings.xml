@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">My App Portfolio</string>
 
-    <string name="demo_artist_name">four tet</string>
+    <string name="demo_artist_name">max roach</string>
     <string name="artist_search_hint">Search for an artist</string>
     <string name="artist_image_content_description">Artist image</string>
     <string name="error_no_artists_found">Too obscure, hipster</string>
@@ -31,5 +31,6 @@
     <string name="title_activity_playback"></string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="action_now_playing">Now Playing</string>
 
 </resources>

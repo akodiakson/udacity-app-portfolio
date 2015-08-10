@@ -25,7 +25,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:titleTextAppearance="@android:style/TextAppearance.Material.Display1"
+            android:titleTextAppearance="@android:style/TextAppearance.Material.Headline"
             app:contentInsetStart="@dimen/toolbar_artist_name_offset"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 

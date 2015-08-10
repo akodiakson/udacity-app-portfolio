@@ -1,10 +1,13 @@
 package com.akodiakson.udacity.portfolio.fragment;
 
+import android.app.ActivityManager;
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,23 +15,32 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.akodiakson.udacity.portfolio.R;
 import com.akodiakson.udacity.portfolio.activity.ArtistSearchActivity;
+import com.akodiakson.udacity.portfolio.application.BusProvider;
 import com.akodiakson.udacity.portfolio.model.SpotifyArtistModel;
 import com.akodiakson.udacity.portfolio.network.ArtistSearchTask;
+import com.akodiakson.udacity.portfolio.service.SpotifyPlayerService;
 import com.akodiakson.udacity.portfolio.util.KeyboardUtil;
 import com.akodiakson.udacity.portfolio.util.NetworkUtil;
+import com.akodiakson.udacity.portfolio.util.ServiceStatusUtil;
 import com.akodiakson.udacity.portfolio.util.StringUtil;
 import com.akodiakson.udacity.portfolio.view.ArtistSearchResultAdapter;
+import com.squareup.otto.Subscribe;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.BitSet;
 import java.util.List;
 
 import kaaes.spotify.webapi.android.models.Artist;
@@ -58,15 +70,19 @@ public class ArtistSearchFragment extends Fragment implements ArtistSearchTaskRe
     }
 
     @Override
+    public void onDestroy() {
+        System.out.println("asdf --> ASF DESTROY");
+        super.onDestroy();
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         fragmentView = inflater.inflate(R.layout.fragment_artist_search, container, false);
 
-//        Toolbar toolbar = (Toolbar) fragmentView.findViewById(R.id.toolbar);
-//        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         RecyclerView recyclerView = (RecyclerView) fragmentView.findViewById(R.id.artist_search_recycler_view);
 
-        adapter = new ArtistSearchResultAdapter((ArtistSearchActivity)getActivity(), artists);
+        adapter = new ArtistSearchResultAdapter((ArtistSearchActivity) getActivity(), artists);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
@@ -78,6 +94,45 @@ public class ArtistSearchFragment extends Fragment implements ArtistSearchTaskRe
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(ServiceStatusUtil.isMyServiceRunning(new WeakReference<Context>(getActivity()))){
+            Intent intent = new Intent(getActivity(), SpotifyPlayerService.class);
+            intent.setAction(SpotifyPlayerService.ACTION_RESTORE_NOW_PLAYING);
+            getActivity().startService(intent);
+            return true;
+        } else {
+            Snackbar
+                    .make(getView().findViewById(R.id.artist_search_recycler_view), "Nothing playing yet", Snackbar.LENGTH_LONG)
+                    .show();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        BusProvider.getInstance().register(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        BusProvider.getInstance().unregister(this);
+    }
+
+    @Subscribe
+    public void onRestorePlayingViewEvent(SpotifyPlayerService.RestorePlayingViewEvent event){
+        ((ArtistSearchActivity)getActivity()).onArtistTrackSelectedForPlayback(event.getmTrack(), (ArrayList)event.getmTopTracks());
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_playback, menu);
     }
 
     @Override
@@ -86,6 +141,7 @@ public class ArtistSearchFragment extends Fragment implements ArtistSearchTaskRe
 
         setupSearchView();
     }
+
 
     private void setupSearchView() {
         EditText searchInput = (EditText) fragmentView.findViewById(R.id.artistSearchEditText);
@@ -116,9 +172,9 @@ public class ArtistSearchFragment extends Fragment implements ArtistSearchTaskRe
 
     @Override
     public void handleArtistSearchTaskResults(ArtistsPager results) {
-        Pager<Artist> pager =  results.artists;
+        Pager<Artist> pager = results.artists;
         List<Artist> artistsResult = pager.items;
-        if(artistsResult == null || artistsResult.isEmpty()){
+        if (artistsResult == null || artistsResult.isEmpty()) {
             Snackbar
                     .make(fragmentView, getString(R.string.error_no_artists_found), Snackbar.LENGTH_LONG)
                     .setAction(getString(R.string.action_try_again), new RetryEntryTapListener())
@@ -130,7 +186,7 @@ public class ArtistSearchFragment extends Fragment implements ArtistSearchTaskRe
     }
 
     private void searchForArtistByInput(@NonNull CharSequence text) {
-        if(NetworkUtil.isNetworkAvailable(new WeakReference<Context>(getActivity()))){
+        if (NetworkUtil.isNetworkAvailable(new WeakReference<Context>(getActivity()))) {
             new ArtistSearchTask(this).execute(text.toString());
         } else {
             Snackbar
@@ -141,7 +197,7 @@ public class ArtistSearchFragment extends Fragment implements ArtistSearchTaskRe
     }
 
     //For cases where a network connection was unavailble, keep the search term, just try to search again
-    private class RetrySearchForConnectivityIssueListener implements View.OnClickListener{
+    private class RetrySearchForConnectivityIssueListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
             searchForArtistByInput(((EditText) fragmentView.findViewById(R.id.artistSearchEditText)).getText().toString());
@@ -149,12 +205,22 @@ public class ArtistSearchFragment extends Fragment implements ArtistSearchTaskRe
     }
 
     //For cases where there was invalid input or no search results for that input.
-    private class RetryEntryTapListener implements View.OnClickListener{
+    private class RetryEntryTapListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
             TextView searchTextEdit = (TextView) fragmentView.findViewById(R.id.artistSearchEditText);
             KeyboardUtil.showKeyboard(new WeakReference<Context>(getActivity()), searchTextEdit);
             searchTextEdit.setText(null);
+        }
+    }
+
+    @Subscribe
+    public void onIsATrackPlayingRightNowResult(SpotifyPlayerService.IsPlayingStatusEvent event){
+        Toast.makeText(getActivity(), "isPlaying?" + event.isPlaying(), Toast.LENGTH_SHORT).show();
+
+        if(event.isPlaying()){
+            getActivity().supportInvalidateOptionsMenu();
+            Toast.makeText(getActivity(), "isPlaying?" + event.isPlaying(), Toast.LENGTH_SHORT).show();
         }
     }
 }

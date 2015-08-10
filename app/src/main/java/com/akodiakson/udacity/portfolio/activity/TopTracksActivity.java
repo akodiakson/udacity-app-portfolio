@@ -26,11 +26,7 @@ public class TopTracksActivity extends AppCompatActivity implements TopTracksFra
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
             Bundle arguments = new Bundle();
-
-            TopTracksFragment fragment2 = (TopTracksFragment) getSupportFragmentManager().findFragmentById(R.id.top_tracks_content_frame_container);
-
-
-                    Intent receivedIntent = getIntent();
+            Intent receivedIntent = getIntent();
             if(receivedIntent != null && receivedIntent.getExtras() != null){
                 arguments.putParcelable(TopTracksFragment.EXTRA_SPOTIFY_ARTIST, receivedIntent.getParcelableExtra(TopTracksFragment.EXTRA_SPOTIFY_ARTIST));
             }
