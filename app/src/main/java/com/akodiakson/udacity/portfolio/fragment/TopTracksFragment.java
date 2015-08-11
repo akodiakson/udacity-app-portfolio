@@ -69,12 +69,6 @@ public class TopTracksFragment extends Fragment implements OnTopTracksResultList
     }
 
     @Override
-    public void onDestroy() {
-        System.out.println("asdf --> TTF DESTROY");
-        super.onDestroy();
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
