@@ -13,7 +13,7 @@ import com.akodiakson.udacity.portfolio.model.TrackModel;
 
 import java.util.ArrayList;
 
-public class ArtistSearchActivity extends AppCompatActivity implements ArtistSearchFragment.Callbacks, TopTracksFragment.Callbacks  {
+public class ArtistSearchActivity extends AppCompatActivity implements ArtistSearchFragment.Callbacks, TopTracksFragment.Callbacks, IRestoreNowPlaying {
 
     private boolean mTwoPane;
 

@@ -18,7 +18,7 @@
             android:name=".activity.ArtistSearchActivity"
             android:label="@string/title_activity_artist_search"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait">
+            android:configChanges="keyboardHidden|orientation|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -30,7 +30,7 @@
             android:label="@string/title_activity_artist_top_tracks"
             android:launchMode="singleTop"
             android:parentActivityName=".activity.ArtistSearchActivity"
-            android:screenOrientation="portrait">>
+            android:configChanges="keyboardHidden|orientation|screenSize">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.akodiakson.udacity.portfolio.activity.ArtistSearchActivity" />
@@ -40,8 +40,8 @@
             android:label="@string/title_activity_playback"
             android:launchMode="singleInstance"
             android:parentActivityName=".activity.ArtistSearchActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/MyDialogTheme">>
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:theme="@style/MyDialogTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.akodiakson.udacity.portfolio.activity.ArtistSearchActivity" />
