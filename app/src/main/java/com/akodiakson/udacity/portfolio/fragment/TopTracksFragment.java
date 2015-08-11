@@ -22,6 +22,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.akodiakson.udacity.portfolio.R;
+import com.akodiakson.udacity.portfolio.activity.IRestoreNowPlaying;
 import com.akodiakson.udacity.portfolio.activity.TopTracksActivity;
 import com.akodiakson.udacity.portfolio.application.BusProvider;
 import com.akodiakson.udacity.portfolio.model.SpotifyArtistModel;
@@ -228,7 +229,7 @@ public class TopTracksFragment extends Fragment implements OnTopTracksResultList
 
     @Subscribe
     public void onRestorePlayerEvent(SpotifyPlayerService.RestorePlayingViewEvent event){
-        ((TopTracksActivity)getActivity()).onArtistTrackSelectedForPlayback(event.getmTrack(), (ArrayList) event.getmTopTracks());
+        ((IRestoreNowPlaying)getActivity()).onArtistTrackSelectedForPlayback(event.getmTrack(), (ArrayList) event.getmTopTracks());
     }
 
 }

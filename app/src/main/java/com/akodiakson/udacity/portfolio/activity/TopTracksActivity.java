@@ -13,8 +13,9 @@ import com.akodiakson.udacity.portfolio.fragment.TopTracksFragment;
 import com.akodiakson.udacity.portfolio.model.TrackModel;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class TopTracksActivity extends AppCompatActivity implements TopTracksFragment.Callbacks{
+public class TopTracksActivity extends AppCompatActivity implements TopTracksFragment.Callbacks, IRestoreNowPlaying{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,4 +65,5 @@ public class TopTracksActivity extends AppCompatActivity implements TopTracksFra
         intent.putExtras(extras);
         startActivity(intent);
     }
+
 }
