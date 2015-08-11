@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    style="@android:style/TextAppearance.Material.Notification">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/playback_album_cover"
+            android:layout_width="64dp"
+            android:src="@drawable/ic_music_note_white_24dp"
+            android:background="@color/colorAccent"
+            android:layout_height="64dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/playback_song_name"
+                android:layout_width="match_parent"
+                style="@android:style/TextAppearance.Material.Notification.Title"
+                android:layout_height="wrap_content"
+                tools:text="Atlas" />
+
+            <TextView
+                android:id="@+id/playback_artist_name"
+                android:layout_width="match_parent"
+                style="@android:style/TextAppearance.Material.Notification.Line2"
+                android:layout_height="wrap_content"
+                tools:text="Battles" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <include
+        android:id="@+id/notification_controls"
+        layout="@layout/layout_player_controls"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>
