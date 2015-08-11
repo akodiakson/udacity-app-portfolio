@@ -48,8 +48,6 @@ public class SpotifyPlayerService extends Service {
     private boolean mIsPaused = false;
     private String mCurrentlyPlayingUrl;
 
-    Target mTarget;
-
     private Handler handler = new Handler();
 
     //For recreating from now playing
@@ -81,7 +79,6 @@ public class SpotifyPlayerService extends Service {
             return super.onStartCommand(intent, flags, startId);
         }
         final String url = intent.getStringExtra(EXTRA_TRACK_URL);
-        System.out.println("SpotifyPlayerService->onStartCommand" + " " + url);
 
         mMediaPlayer = getMediaPlayer();
 
@@ -89,11 +86,6 @@ public class SpotifyPlayerService extends Service {
             int millisToSeek = intent.getIntExtra(SpotifyPlayerService.EXTRA_MILLIS_TO_SEEK, 0);
             System.out.println("millisToSeek->" + millisToSeek);
             mMediaPlayer.seekTo(millisToSeek);
-        }
-        if(ACTION_NEXT.equals(intent.getAction())){
-            int millisToSeek = intent.getIntExtra(SpotifyPlayerService.EXTRA_MILLIS_TO_SEEK, 0);
-            System.out.println("millisToSeek->" + millisToSeek);
-            mMediaPlayer.seekTo(29999);
         }
         else if(ACTION_CHECK_IF_PLAYING.equals(intent.getAction())){
             BusProvider.getInstance().post(new IsPlayingStatusEvent(mMediaPlayer != null && mMediaPlayer.isPlaying()));
@@ -176,73 +168,11 @@ public class SpotifyPlayerService extends Service {
                 }
             });
             mMediaPlayer.prepareAsync(); // might take long! (for buffering, etc)
-
-
-
-
-            RemoteViews view = new RemoteViews(getPackageName(), R.layout.notification_player);
-            PortfolioApplication application = (PortfolioApplication) getApplication();
-
-
-            final String name = application.getCurrentlyPlayingTrack().name;
-            final String albumName = application.getCurrentlyPlayingTrack().albumName;
-            Notification noti = new Notification.Builder(this)
-                    .setVisibility(Notification.VISIBILITY_PUBLIC)
-                    .setSmallIcon(R.drawable.ic_music_note_white_24dp)
-                    .setContentTitle(name)
-                    .setContentText(albumName)
-                    .setStyle(new Notification.MediaStyle()
-                            .setShowActionsInCompactView(1 /* #1: pause button */)
-                            )
-                    .addAction(android.R.drawable.ic_media_previous, "Prev", null)
-                    .addAction(android.R.drawable.ic_media_pause, "Play/Pause", null)
-                    .addAction(android.R.drawable.ic_media_next, "Next", getNextPendingIntent())
-
-                    .build();
-
-
-//            mTarget = new Target() {
-//                @Override
-//                public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-//                    mBuilder.setLargeIcon(bitmap)
-//                            .setDefaults(Notification.DEFAULT_ALL);
-//                    // send the notification again to update it w/ the right image
-//                    ((NotificationManager) (getSystemService(NOTIFICATION_SERVICE)))
-//                            .notify(007, mBuilder.build());
-//                }
-//
-//                @Override
-//                public void onBitmapFailed(Drawable errorDrawable) {
-//                    System.out.println("onBitFailed");
-//                }
-//
-//                @Override
-//                public void onPrepareLoad(Drawable placeHolderDrawable) {}
-//            };
-//
-//
-//            Picasso.with(this).load( application.getCurrentlyPlayingTrack().albumImage).into(mTarget);
-
-            NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-            mNotificationManager.notify(007, noti);
-
         } catch (IOException e) {
             //TODO
         } catch (IllegalStateException ex) {
             //TODO
         }
-    }
-
-    private PendingIntent getNextPendingIntent() {
-        Intent intent = new Intent(this, SpotifyPlayerService.class);
-        intent.setAction(SpotifyPlayerService.ACTION_NEXT);
-        final int value = 1000;
-        Bundle extras = new Bundle();
-
-        extras.getInt(SpotifyPlayerService.EXTRA_MILLIS_TO_SEEK, value);
-        intent.putExtras(extras);
-        PendingIntent pendingIntent = PendingIntent.getService(this, 0, intent, 0);
-        return pendingIntent;
     }
 
     private MediaPlayer getMediaPlayer() {
