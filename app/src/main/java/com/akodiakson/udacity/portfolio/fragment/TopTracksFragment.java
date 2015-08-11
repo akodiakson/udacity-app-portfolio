@@ -1,7 +1,6 @@
 package com.akodiakson.udacity.portfolio.fragment;
 
 
-import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -10,9 +9,6 @@ import android.os.Bundle;
 
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -26,7 +22,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.akodiakson.udacity.portfolio.R;
-import com.akodiakson.udacity.portfolio.activity.ArtistSearchActivity;
 import com.akodiakson.udacity.portfolio.activity.TopTracksActivity;
 import com.akodiakson.udacity.portfolio.application.BusProvider;
 import com.akodiakson.udacity.portfolio.model.SpotifyArtistModel;
@@ -59,7 +54,6 @@ public class TopTracksFragment extends Fragment implements OnTopTracksResultList
 
     private Toolbar toolbar;
 
-    private Menu mMenu;
     private SpotifyArtistModel spotifyArtistModel;
 
     //TODO -- this should pass song-related info

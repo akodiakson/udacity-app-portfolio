@@ -1,18 +1,13 @@
 package com.akodiakson.udacity.portfolio.fragment;
 
-import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -40,7 +35,6 @@ import com.squareup.otto.Subscribe;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.BitSet;
 import java.util.List;
 
 import kaaes.spotify.webapi.android.models.Artist;

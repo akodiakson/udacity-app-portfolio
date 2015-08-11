@@ -47,7 +47,7 @@
         <service
             android:name=".service.SpotifyPlayerService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true"/>
     </application>
 
 </manifest>

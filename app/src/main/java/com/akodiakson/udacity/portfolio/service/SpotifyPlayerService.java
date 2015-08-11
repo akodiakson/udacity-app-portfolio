@@ -1,32 +1,15 @@
 package com.akodiakson.udacity.portfolio.service;
 
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
-import android.media.RemoteControlClient;
-import android.media.session.MediaSession;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.TaskStackBuilder;
-import android.widget.RemoteViews;
 
 import com.akodiakson.udacity.portfolio.PortfolioApplication;
-import com.akodiakson.udacity.portfolio.R;
-import com.akodiakson.udacity.portfolio.activity.PlaybackActivity;
 import com.akodiakson.udacity.portfolio.fragment.PlaybackFragment;
 import com.akodiakson.udacity.portfolio.application.BusProvider;
 import com.akodiakson.udacity.portfolio.model.TrackModel;
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 
 import java.io.IOException;
 import java.util.List;
@@ -36,12 +19,11 @@ public class SpotifyPlayerService extends Service {
     //TODO -- create actions here for play/pause, scrub, next/previous
     public static final String EXTRA_TRACK_URL = "EXTRA_TRACK_URL";
     public static final String ACTION_SEEK = "ACTION_SEEK";
-    public static final String ACTION_CHECK_IF_PLAYING = "ACTION_CHECK_IF_PLAYING";
+    private static final String ACTION_CHECK_IF_PLAYING = "ACTION_CHECK_IF_PLAYING";
 
     public static final String EXTRA_MILLIS_TO_SEEK = "EXTRA_MILLIS_TO_SEEK";
     public static final String ACTION_RESTORE_NOW_PLAYING = "ACTION_RESTORE_NOW_PLAYING";
     public static final String EXTRA_DIRECTIVE = "EXTRA_DIRECTIVE";
-    private static final String ACTION_NEXT = "ACTION_NEXT";
 
     private MediaPlayer mMediaPlayer;
     private boolean mIsCurrentlyPlaying = false;
@@ -50,11 +32,7 @@ public class SpotifyPlayerService extends Service {
 
     private Handler handler = new Handler();
 
-    //For recreating from now playing
-    private TrackModel mTrack;
-    private List<TrackModel> mTopTracks;
-
-    Runnable run = new Runnable() {
+    private Runnable run = new Runnable() {
         @Override
         public void run() {
             if (mMediaPlayer != null && mMediaPlayer.isPlaying()) {
@@ -76,7 +54,7 @@ public class SpotifyPlayerService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         if(intent == null){
-            return super.onStartCommand(intent, flags, startId);
+            return super.onStartCommand(null, flags, startId);
         }
         final String url = intent.getStringExtra(EXTRA_TRACK_URL);
 
@@ -99,8 +77,8 @@ public class SpotifyPlayerService extends Service {
             TrackModel track = intent.getExtras().getParcelable(PlaybackFragment.EXTRA_SELECTED_SONG);
             List<TrackModel> topTracks = intent.getExtras().getParcelableArrayList(PlaybackFragment.EXTRA_TOP_TRACKS);
 
-            this.mTrack = track;
-            this.mTopTracks = topTracks;
+            TrackModel mTrack = track;
+            List<TrackModel> mTopTracks = topTracks;
 
             if (mCurrentlyPlayingUrl == null || url.equals(mCurrentlyPlayingUrl)) {
                 if (!mIsCurrentlyPlaying && !mIsPaused) {
@@ -168,9 +146,7 @@ public class SpotifyPlayerService extends Service {
                 }
             });
             mMediaPlayer.prepareAsync(); // might take long! (for buffering, etc)
-        } catch (IOException e) {
-            //TODO
-        } catch (IllegalStateException ex) {
+        } catch (IOException | IllegalStateException e) {
             //TODO
         }
     }

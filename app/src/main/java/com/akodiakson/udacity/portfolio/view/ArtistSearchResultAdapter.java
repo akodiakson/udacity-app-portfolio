@@ -46,11 +46,8 @@ public class ArtistSearchResultAdapter extends RecyclerView.Adapter<ArtistSearch
         List<Image> images = artist.images;
         Context context = holder.itemView.getContext();
 
-        final Image image;
-
         if(!images.isEmpty()){
             Image firstImage = images.get(0);
-            image = firstImage;
             Picasso.with(context)
                     .load(firstImage.url)
                     .resize(firstImage.height, firstImage.height)
@@ -85,7 +82,6 @@ public class ArtistSearchResultAdapter extends RecyclerView.Adapter<ArtistSearch
 
         public ImageView artistImage;
         public TextView artistName;
-        public View currentlySelectedIndicator;
 
         public ArtistViewHolder(View artistView) {
             super(artistView);
@@ -93,7 +89,6 @@ public class ArtistSearchResultAdapter extends RecyclerView.Adapter<ArtistSearch
             artistName = (TextView) artistView.findViewById(R.id.artistName);
             artistImage.setClipToOutline(true);
             artistImage.setOutlineProvider(new CircularOutlineProvider(false));
-            currentlySelectedIndicator = artistView.findViewById(R.id.currently_selected_artist_indicator);
         }
     }
 }
