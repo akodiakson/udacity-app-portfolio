@@ -3,7 +3,9 @@ package com.akodiakson.udacity.portfolio.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 
 import com.akodiakson.udacity.portfolio.R;
 import com.akodiakson.udacity.portfolio.fragment.PlaybackFragment;
@@ -34,6 +36,17 @@ public class TopTracksActivity extends AppCompatActivity implements TopTracksFra
                     .add(R.id.top_tracks_content_frame_container, fragment)
                     .commit();
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // Respond to the action bar's Up/Home button
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
