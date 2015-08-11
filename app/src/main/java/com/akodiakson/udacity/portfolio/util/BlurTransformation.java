@@ -12,7 +12,7 @@ import com.squareup.picasso.Transformation;
 //Source : https://gist.github.com/ryanbateman/6667995
 public class BlurTransformation implements Transformation {
 
-    RenderScript rs;
+    private RenderScript rs;
     public BlurTransformation(Context context) {
         super();
         rs = RenderScript.create(context);

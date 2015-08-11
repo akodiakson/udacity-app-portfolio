@@ -29,7 +29,7 @@ public class PlaybackFragment extends DialogFragment {
 
     public static final String EXTRA_SELECTED_SONG = "EXTRA_SELECTED_SONG";
     public static final String EXTRA_TOP_TRACKS = "EXTRA_TOP_TRACKS";
-    public static final int MILLIS_PER_SECOND = 1000;
+    private static final int MILLIS_PER_SECOND = 1000;
     public static final String TRACK_TIME_FORMAT = "m:ss";
 
     private TrackModel mTrack;
@@ -126,8 +126,7 @@ public class PlaybackFragment extends DialogFragment {
     private void advanceToNextTrack() {
         int currentTrackPosition = getCurrentTrackPosition();
         int nextPosition = (currentTrackPosition == mTopTracks.size() - 1) ? 0 : currentTrackPosition + 1;
-        TrackModel nextTrack = mTopTracks.get(nextPosition);
-        mTrack = nextTrack;
+        mTrack = mTopTracks.get(nextPosition);
         //Update the UI for the next track
         setupAlbumArt();
         setupAlbumDetails();
@@ -139,8 +138,7 @@ public class PlaybackFragment extends DialogFragment {
     private void goBackToPreviousTrack() {
         int currentTrackPosition = getCurrentTrackPosition();
         int nextPosition = (currentTrackPosition == 0) ? mTopTracks.size() - 1 : currentTrackPosition - 1;
-        TrackModel nextTrack = mTopTracks.get(nextPosition);
-        mTrack = nextTrack;
+        mTrack = mTopTracks.get(nextPosition);
         //Update the UI for the next track
         setupAlbumArt();
         setupAlbumDetails();

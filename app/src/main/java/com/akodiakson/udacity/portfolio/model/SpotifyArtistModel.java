@@ -3,11 +3,9 @@ package com.akodiakson.udacity.portfolio.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import kaaes.spotify.webapi.android.models.Artist;
-import kaaes.spotify.webapi.android.models.Followers;
 import kaaes.spotify.webapi.android.models.Image;
 
 public class SpotifyArtistModel implements Parcelable {
