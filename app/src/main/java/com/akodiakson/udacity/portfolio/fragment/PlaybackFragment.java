@@ -1,19 +1,9 @@
 package com.akodiakson.udacity.portfolio.fragment;
 
-
-import android.app.ActionBar;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.ColorFilter;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.BitmapDrawable;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.support.v7.graphics.Palette;
-import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +11,6 @@ import android.view.Window;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.akodiakson.udacity.portfolio.PortfolioApplication;
 import com.akodiakson.udacity.portfolio.R;
@@ -30,13 +19,10 @@ import com.akodiakson.udacity.portfolio.model.TrackModel;
 import com.akodiakson.udacity.portfolio.service.SpotifyPlayerService;
 import com.akodiakson.udacity.portfolio.util.BlurTransformation;
 import com.squareup.otto.Subscribe;
-import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.text.DateFormat;
-import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.List;
 
 public class PlaybackFragment extends DialogFragment {
