@@ -64,12 +64,6 @@ public class ArtistSearchFragment extends Fragment implements ArtistSearchTaskRe
     }
 
     @Override
-    public void onDestroy() {
-        System.out.println("asdf --> ASF DESTROY");
-        super.onDestroy();
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         fragmentView = inflater.inflate(R.layout.fragment_artist_search, container, false);

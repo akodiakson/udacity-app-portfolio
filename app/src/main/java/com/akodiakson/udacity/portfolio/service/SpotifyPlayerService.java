@@ -62,7 +62,6 @@ public class SpotifyPlayerService extends Service {
 
         if(ACTION_SEEK.equals(intent.getAction())){
             int millisToSeek = intent.getIntExtra(SpotifyPlayerService.EXTRA_MILLIS_TO_SEEK, 0);
-            System.out.println("millisToSeek->" + millisToSeek);
             mMediaPlayer.seekTo(millisToSeek);
         }
         else if(ACTION_CHECK_IF_PLAYING.equals(intent.getAction())){
@@ -109,7 +108,6 @@ public class SpotifyPlayerService extends Service {
 
     @Override
     public void onDestroy() {
-        System.out.println("SpotifyPlayerService->onDestroy");
         mMediaPlayer.release();
         mMediaPlayer = null;
         super.onDestroy();
