@@ -19,7 +19,7 @@ public class SpotifyPlayerService extends Service {
     //TODO -- create actions here for play/pause, scrub, next/previous
     public static final String EXTRA_TRACK_URL = "EXTRA_TRACK_URL";
     public static final String ACTION_SEEK = "ACTION_SEEK";
-    private static final String ACTION_CHECK_IF_PLAYING = "ACTION_CHECK_IF_PLAYING";
+    public static final String ACTION_CHECK_IF_PLAYING = "ACTION_CHECK_IF_PLAYING";
 
     public static final String EXTRA_MILLIS_TO_SEEK = "EXTRA_MILLIS_TO_SEEK";
     public static final String ACTION_RESTORE_NOW_PLAYING = "ACTION_RESTORE_NOW_PLAYING";
@@ -62,11 +62,12 @@ public class SpotifyPlayerService extends Service {
 
         if(ACTION_SEEK.equals(intent.getAction())){
             int millisToSeek = intent.getIntExtra(SpotifyPlayerService.EXTRA_MILLIS_TO_SEEK, 0);
-            System.out.println("millisToSeek->" + millisToSeek);
             mMediaPlayer.seekTo(millisToSeek);
         }
         else if(ACTION_CHECK_IF_PLAYING.equals(intent.getAction())){
-            BusProvider.getInstance().post(new IsPlayingStatusEvent(mMediaPlayer != null && mMediaPlayer.isPlaying()));
+
+            boolean isPlaying = mMediaPlayer != null && mMediaPlayer.isPlaying();
+            BusProvider.getInstance().post(new IsPlayingStatusEvent(isPlaying ? IsPlayingStatusEvent.PLAYING : mIsPaused ? IsPlayingStatusEvent.PAUSED : IsPlayingStatusEvent.STOPPED));
             return super.onStartCommand(intent, flags, startId);
         } else if(ACTION_RESTORE_NOW_PLAYING.equals(intent.getAction())){
             PortfolioApplication app = (PortfolioApplication) getApplication();
@@ -109,7 +110,6 @@ public class SpotifyPlayerService extends Service {
 
     @Override
     public void onDestroy() {
-        System.out.println("SpotifyPlayerService->onDestroy");
         mMediaPlayer.release();
         mMediaPlayer = null;
         super.onDestroy();
@@ -202,13 +202,17 @@ public class SpotifyPlayerService extends Service {
     }
 
     public static final class IsPlayingStatusEvent {
-        private boolean isPlaying;
-        public IsPlayingStatusEvent(boolean isPlaying) {
-            this.isPlaying = isPlaying;
+        public static final int STOPPED = -1;
+        public static final int PAUSED = 0;
+        public static final int PLAYING = 1;
+
+        private int playbackStatus;
+        public IsPlayingStatusEvent(int playbackStatus) {
+            this.playbackStatus = playbackStatus;
         }
 
-        public boolean isPlaying() {
-            return isPlaying;
+        public int getPlaybackStatus() {
+            return playbackStatus;
         }
     }
 

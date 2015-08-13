@@ -70,10 +70,10 @@ public class PlaybackFragment extends DialogFragment {
         setupAlbumArt();
         setupAlbumDetails();
         setupPlaybackControls();
+        storeTrackData();
 
-        playSelectedTrack();
+        checkIfPlayerIsPlaying();
     }
-
 
     @Override
     public void onPause() {
@@ -112,6 +112,34 @@ public class PlaybackFragment extends DialogFragment {
     @Subscribe
     public void onSongCompleted(SpotifyPlayerService.SongCompletedEvent event) {
         advanceToNextTrack();
+    }
+
+    @Subscribe
+    public void onIsPlayingEvent(SpotifyPlayerService.IsPlayingStatusEvent event){
+        ImageView playPause = (ImageView) getView().findViewById(R.id.player_play_pause);
+        if(event.getPlaybackStatus() == SpotifyPlayerService.IsPlayingStatusEvent.PLAYING){
+            //The player is playing, so show the pause button
+            playPause.setTag("showPause");
+            playPause.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_media_pause, null));
+        }
+        else if(event.getPlaybackStatus() == SpotifyPlayerService.IsPlayingStatusEvent.PAUSED){
+            //The player is paused, so show the play button
+            playPause.setTag("showPause");
+            playPause.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_media_play, null));
+        }
+        else {
+            //The player is neither playing nor paused, so start playing the song
+            playPause.setTag("showPlay");
+            playPause.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_media_play, null)); //playback will switch this to the paused state when appropriate
+            playSelectedTrack();
+        }
+    }
+
+    /* Corresponds to onIsPlayingEvent */
+    private void checkIfPlayerIsPlaying() {
+        Intent intent = new Intent(getActivity(), SpotifyPlayerService.class);
+        intent.setAction(SpotifyPlayerService.ACTION_CHECK_IF_PLAYING);
+        getActivity().startService(intent);
     }
 
     private void populateTrackModel() {
@@ -180,6 +208,7 @@ public class PlaybackFragment extends DialogFragment {
         TextView artistName = (TextView) view.findViewById(R.id.playback_artist_name);
         TextView albumName = (TextView) view.findViewById(R.id.playback_track_album_name);
         TextView duration = (TextView) view.findViewById(R.id.playback_track_duration);
+
         DateFormat df = new SimpleDateFormat(TRACK_TIME_FORMAT);
         String formatted = df.format(mTrack.duration);
 
@@ -187,7 +216,6 @@ public class PlaybackFragment extends DialogFragment {
         artistName.setText(mTrack.artistName);
         albumName.setText(mTrack.albumName);
         duration.setText(formatted);
-
     }
 
     private void setupPlaybackControls() {
@@ -196,12 +224,12 @@ public class PlaybackFragment extends DialogFragment {
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-
+                //Intentionally left blank
             }
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-
+                //Intentionally left blank
             }
 
             @Override
@@ -234,7 +262,6 @@ public class PlaybackFragment extends DialogFragment {
     }
 
     private void playSelectedTrack() {
-        storeTrackData();
 
         ImageView playPause = (ImageView) getView().findViewById(R.id.player_play_pause);
         Object tag = playPause.getTag();

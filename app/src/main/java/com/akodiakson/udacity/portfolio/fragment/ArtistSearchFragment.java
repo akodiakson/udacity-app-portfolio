@@ -64,12 +64,6 @@ public class ArtistSearchFragment extends Fragment implements ArtistSearchTaskRe
     }
 
     @Override
-    public void onDestroy() {
-        System.out.println("asdf --> ASF DESTROY");
-        super.onDestroy();
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         fragmentView = inflater.inflate(R.layout.fragment_artist_search, container, false);
@@ -210,11 +204,10 @@ public class ArtistSearchFragment extends Fragment implements ArtistSearchTaskRe
 
     @Subscribe
     public void onIsATrackPlayingRightNowResult(SpotifyPlayerService.IsPlayingStatusEvent event){
-        Toast.makeText(getActivity(), "isPlaying?" + event.isPlaying(), Toast.LENGTH_SHORT).show();
 
-        if(event.isPlaying()){
+        final int playbackStatus = event.getPlaybackStatus();
+        if(playbackStatus == SpotifyPlayerService.IsPlayingStatusEvent.PLAYING || playbackStatus == SpotifyPlayerService.IsPlayingStatusEvent.PAUSED){
             getActivity().supportInvalidateOptionsMenu();
-            Toast.makeText(getActivity(), "isPlaying?" + event.isPlaying(), Toast.LENGTH_SHORT).show();
         }
     }
 }
