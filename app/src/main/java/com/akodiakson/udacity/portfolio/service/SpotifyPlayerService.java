@@ -65,7 +65,9 @@ public class SpotifyPlayerService extends Service {
             mMediaPlayer.seekTo(millisToSeek);
         }
         else if(ACTION_CHECK_IF_PLAYING.equals(intent.getAction())){
-            BusProvider.getInstance().post(new IsPlayingStatusEvent(mMediaPlayer != null && mMediaPlayer.isPlaying()));
+
+            boolean isPlaying = mMediaPlayer != null && mMediaPlayer.isPlaying();
+            BusProvider.getInstance().post(new IsPlayingStatusEvent(isPlaying ? IsPlayingStatusEvent.PLAYING : mIsPaused ? IsPlayingStatusEvent.PAUSED : IsPlayingStatusEvent.STOPPED));
             return super.onStartCommand(intent, flags, startId);
         } else if(ACTION_RESTORE_NOW_PLAYING.equals(intent.getAction())){
             PortfolioApplication app = (PortfolioApplication) getApplication();
@@ -200,13 +202,17 @@ public class SpotifyPlayerService extends Service {
     }
 
     public static final class IsPlayingStatusEvent {
-        private boolean isPlaying;
-        public IsPlayingStatusEvent(boolean isPlaying) {
-            this.isPlaying = isPlaying;
+        public static final int STOPPED = -1;
+        public static final int PAUSED = 0;
+        public static final int PLAYING = 1;
+
+        private int playbackStatus;
+        public IsPlayingStatusEvent(int playbackStatus) {
+            this.playbackStatus = playbackStatus;
         }
 
-        public boolean isPlaying() {
-            return isPlaying;
+        public int getPlaybackStatus() {
+            return playbackStatus;
         }
     }
 

@@ -204,11 +204,10 @@ public class ArtistSearchFragment extends Fragment implements ArtistSearchTaskRe
 
     @Subscribe
     public void onIsATrackPlayingRightNowResult(SpotifyPlayerService.IsPlayingStatusEvent event){
-        Toast.makeText(getActivity(), "isPlaying?" + event.isPlaying(), Toast.LENGTH_SHORT).show();
 
-        if(event.isPlaying()){
+        final int playbackStatus = event.getPlaybackStatus();
+        if(playbackStatus == SpotifyPlayerService.IsPlayingStatusEvent.PLAYING || playbackStatus == SpotifyPlayerService.IsPlayingStatusEvent.PAUSED){
             getActivity().supportInvalidateOptionsMenu();
-            Toast.makeText(getActivity(), "isPlaying?" + event.isPlaying(), Toast.LENGTH_SHORT).show();
         }
     }
 }

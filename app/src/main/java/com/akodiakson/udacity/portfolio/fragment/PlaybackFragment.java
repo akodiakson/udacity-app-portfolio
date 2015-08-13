@@ -71,8 +71,13 @@ public class PlaybackFragment extends DialogFragment {
         setupAlbumDetails();
         setupPlaybackControls();
 
-        playSelectedTrack();
+        storeTrackData();
+        //If from a top tracks song tapped, then just play
+
+        checkIfPlayerIsPlaying();
     }
+
+
 
 
     @Override
@@ -117,15 +122,30 @@ public class PlaybackFragment extends DialogFragment {
     @Subscribe
     public void onIsPlayingEvent(SpotifyPlayerService.IsPlayingStatusEvent event){
         ImageView playPause = (ImageView) getView().findViewById(R.id.player_play_pause);
-        if(event.isPlaying()){
+        if(event.getPlaybackStatus() == SpotifyPlayerService.IsPlayingStatusEvent.PLAYING){
             //The player is playing, so show the pause button
             playPause.setTag("showPause");
             playPause.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_media_pause, null));
-        } else {
-            //The player is not playing, so show the play button
-            playPause.setTag("showPlay");
+        }
+        else if(event.getPlaybackStatus() == SpotifyPlayerService.IsPlayingStatusEvent.PAUSED){
+            //The player is paused, so show the play button
+            playPause.setTag("showPause");
             playPause.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_media_play, null));
         }
+        else {
+            //The player is neither playing nor paused, so start playing the song
+            playPause.setTag("showPlay");
+            playPause.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_media_play, null)); //playback will switch this to the paused state when appropriate
+            playSelectedTrack();
+        }
+    }
+
+    private void checkIfPlayerIsPlaying() {
+        //Otherwise, show the fragment, show playing only if the service is playing
+        //TODO
+        Intent intent = new Intent(getActivity(), SpotifyPlayerService.class);
+        intent.setAction(SpotifyPlayerService.ACTION_CHECK_IF_PLAYING);
+        getActivity().startService(intent);
     }
 
     private void populateTrackModel() {
@@ -236,10 +256,6 @@ public class PlaybackFragment extends DialogFragment {
         previous.setOnClickListener(onPreviousTapped());
         playPause.setOnClickListener(onPlayPauseTapped());
         next.setOnClickListener(onNextTapped());
-
-        Intent intent = new Intent(getActivity(), SpotifyPlayerService.class);
-        intent.setAction(SpotifyPlayerService.ACTION_CHECK_IF_PLAYING);
-        getActivity().startService(intent);
     }
 
     private View.OnClickListener onPlayPauseTapped() {
@@ -252,7 +268,6 @@ public class PlaybackFragment extends DialogFragment {
     }
 
     private void playSelectedTrack() {
-        storeTrackData();
 
         ImageView playPause = (ImageView) getView().findViewById(R.id.player_play_pause);
         Object tag = playPause.getTag();
