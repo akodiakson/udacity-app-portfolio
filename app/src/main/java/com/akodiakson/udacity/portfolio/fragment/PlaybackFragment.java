@@ -70,15 +70,10 @@ public class PlaybackFragment extends DialogFragment {
         setupAlbumArt();
         setupAlbumDetails();
         setupPlaybackControls();
-
         storeTrackData();
-        //If from a top tracks song tapped, then just play
 
         checkIfPlayerIsPlaying();
     }
-
-
-
 
     @Override
     public void onPause() {
@@ -140,9 +135,8 @@ public class PlaybackFragment extends DialogFragment {
         }
     }
 
+    /* Corresponds to onIsPlayingEvent */
     private void checkIfPlayerIsPlaying() {
-        //Otherwise, show the fragment, show playing only if the service is playing
-        //TODO
         Intent intent = new Intent(getActivity(), SpotifyPlayerService.class);
         intent.setAction(SpotifyPlayerService.ACTION_CHECK_IF_PLAYING);
         getActivity().startService(intent);
