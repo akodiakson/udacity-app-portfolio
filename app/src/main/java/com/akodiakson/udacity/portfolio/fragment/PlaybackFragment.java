@@ -70,7 +70,7 @@ public class PlaybackFragment extends DialogFragment {
         setupAlbumArt();
         setupAlbumDetails();
         setupPlaybackControls();
-        storeTrackData();
+        storeTrackDataToSession();
 
         checkIfPlayerIsPlaying();
     }
@@ -156,6 +156,7 @@ public class PlaybackFragment extends DialogFragment {
         int nextPosition = (currentTrackPosition == mTopTracks.size() - 1) ? 0 : currentTrackPosition + 1;
         mTrack = mTopTracks.get(nextPosition);
         //Update the UI for the next track
+
         setupAlbumArt();
         setupAlbumDetails();
 
@@ -262,6 +263,7 @@ public class PlaybackFragment extends DialogFragment {
     }
 
     private void playSelectedTrack() {
+        storeTrackDataToSession();
 
         ImageView playPause = (ImageView) getView().findViewById(R.id.player_play_pause);
         Object tag = playPause.getTag();
@@ -277,7 +279,7 @@ public class PlaybackFragment extends DialogFragment {
         getActivity().startService(intent);
     }
 
-    private void storeTrackData() {
+    private void storeTrackDataToSession() {
         PortfolioApplication app = (PortfolioApplication) getActivity().getApplication();
         app.setCurrentlyPlayingTrack(mTrack);
         app.setTopTracks(mTopTracks);
