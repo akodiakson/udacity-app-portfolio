@@ -163,11 +163,14 @@ public class PlaybackFragment extends DialogFragment {
                 .into(albumArt);
 
         ImageView background = (ImageView) getView().findViewById(R.id.playback_background);
-        Picasso.with(getActivity())
-                .load(mTrack.albumImage)
-                .transform(new BlurTransformation(getActivity()))
-                .fit()
-                .into(background);
+        if(background != null) {
+            //Only landscape has a background
+            Picasso.with(getActivity())
+                    .load(mTrack.albumImage)
+                    .transform(new BlurTransformation(getActivity()))
+                    .fit()
+                    .into(background);
+        }
     }
 
     private void setupAlbumDetails() {
