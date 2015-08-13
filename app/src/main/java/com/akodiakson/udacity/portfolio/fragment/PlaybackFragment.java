@@ -114,6 +114,20 @@ public class PlaybackFragment extends DialogFragment {
         advanceToNextTrack();
     }
 
+    @Subscribe
+    public void onIsPlayingEvent(SpotifyPlayerService.IsPlayingStatusEvent event){
+        ImageView playPause = (ImageView) getView().findViewById(R.id.player_play_pause);
+        if(event.isPlaying()){
+            //The player is playing, so show the pause button
+            playPause.setTag("showPause");
+            playPause.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_media_pause, null));
+        } else {
+            //The player is not playing, so show the play button
+            playPause.setTag("showPlay");
+            playPause.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_media_play, null));
+        }
+    }
+
     private void populateTrackModel() {
         Bundle arguments = getActivity().getIntent().getExtras();
         TrackModel track = arguments.getParcelable(EXTRA_SELECTED_SONG);
@@ -180,6 +194,7 @@ public class PlaybackFragment extends DialogFragment {
         TextView artistName = (TextView) view.findViewById(R.id.playback_artist_name);
         TextView albumName = (TextView) view.findViewById(R.id.playback_track_album_name);
         TextView duration = (TextView) view.findViewById(R.id.playback_track_duration);
+
         DateFormat df = new SimpleDateFormat(TRACK_TIME_FORMAT);
         String formatted = df.format(mTrack.duration);
 
@@ -187,7 +202,6 @@ public class PlaybackFragment extends DialogFragment {
         artistName.setText(mTrack.artistName);
         albumName.setText(mTrack.albumName);
         duration.setText(formatted);
-
     }
 
     private void setupPlaybackControls() {
@@ -196,12 +210,12 @@ public class PlaybackFragment extends DialogFragment {
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-
+                //Intentionally left blank
             }
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-
+                //Intentionally left blank
             }
 
             @Override
@@ -222,6 +236,10 @@ public class PlaybackFragment extends DialogFragment {
         previous.setOnClickListener(onPreviousTapped());
         playPause.setOnClickListener(onPlayPauseTapped());
         next.setOnClickListener(onNextTapped());
+
+        Intent intent = new Intent(getActivity(), SpotifyPlayerService.class);
+        intent.setAction(SpotifyPlayerService.ACTION_CHECK_IF_PLAYING);
+        getActivity().startService(intent);
     }
 
     private View.OnClickListener onPlayPauseTapped() {

@@ -19,7 +19,7 @@ public class SpotifyPlayerService extends Service {
     //TODO -- create actions here for play/pause, scrub, next/previous
     public static final String EXTRA_TRACK_URL = "EXTRA_TRACK_URL";
     public static final String ACTION_SEEK = "ACTION_SEEK";
-    private static final String ACTION_CHECK_IF_PLAYING = "ACTION_CHECK_IF_PLAYING";
+    public static final String ACTION_CHECK_IF_PLAYING = "ACTION_CHECK_IF_PLAYING";
 
     public static final String EXTRA_MILLIS_TO_SEEK = "EXTRA_MILLIS_TO_SEEK";
     public static final String ACTION_RESTORE_NOW_PLAYING = "ACTION_RESTORE_NOW_PLAYING";
