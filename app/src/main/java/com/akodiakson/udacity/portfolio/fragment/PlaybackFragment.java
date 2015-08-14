@@ -151,10 +151,10 @@ public class PlaybackFragment extends DialogFragment {
         final PortfolioApplication app = (PortfolioApplication) getActivity().getApplicationContext();
         final TrackModel currentlyPlayingTrack = app.getCurrentlyPlayingTrack();
         final List<TrackModel> currentTopTracks = app.getTopTracks();
-        if(currentlyPlayingTrack != null){
-            this.mTrack = app.getCurrentlyPlayingTrack();
-        } else {
-            this.mTrack = track;
+
+        this.mTrack = track;
+        if(currentlyPlayingTrack != null && currentlyPlayingTrack.previewUrl != track.previewUrl) {
+            playSelectedTrack();
         }
 
         if(currentTopTracks != null){
