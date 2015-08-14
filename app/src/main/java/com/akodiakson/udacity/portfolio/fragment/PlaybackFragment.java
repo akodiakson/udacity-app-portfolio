@@ -131,6 +131,7 @@ public class PlaybackFragment extends DialogFragment {
             //The player is neither playing nor paused, so start playing the song
             playPause.setTag("showPlay");
             playPause.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_media_play, null)); //playback will switch this to the paused state when appropriate
+            storeTrackDataToSession();
             playSelectedTrack();
         }
     }
@@ -147,8 +148,20 @@ public class PlaybackFragment extends DialogFragment {
         TrackModel track = arguments.getParcelable(EXTRA_SELECTED_SONG);
         List<TrackModel> topTracks = arguments.getParcelableArrayList(EXTRA_TOP_TRACKS);
 
-        this.mTrack = track;
-        this.mTopTracks = topTracks;
+        final PortfolioApplication app = (PortfolioApplication) getActivity().getApplicationContext();
+        final TrackModel currentlyPlayingTrack = app.getCurrentlyPlayingTrack();
+        final List<TrackModel> currentTopTracks = app.getTopTracks();
+        if(currentlyPlayingTrack != null){
+            this.mTrack = app.getCurrentlyPlayingTrack();
+        } else {
+            this.mTrack = track;
+        }
+
+        if(currentTopTracks != null){
+            this.mTopTracks = currentTopTracks;
+        } else {
+            this.mTopTracks = topTracks;
+        }
     }
 
     private void advanceToNextTrack() {
@@ -157,6 +170,7 @@ public class PlaybackFragment extends DialogFragment {
         mTrack = mTopTracks.get(nextPosition);
         //Update the UI for the next track
 
+        storeTrackDataToSession();
         setupAlbumArt();
         setupAlbumDetails();
 
@@ -169,6 +183,8 @@ public class PlaybackFragment extends DialogFragment {
         int nextPosition = (currentTrackPosition == 0) ? mTopTracks.size() - 1 : currentTrackPosition - 1;
         mTrack = mTopTracks.get(nextPosition);
         //Update the UI for the next track
+        storeTrackDataToSession();
+
         setupAlbumArt();
         setupAlbumDetails();
 
@@ -263,8 +279,6 @@ public class PlaybackFragment extends DialogFragment {
     }
 
     private void playSelectedTrack() {
-        storeTrackDataToSession();
-
         ImageView playPause = (ImageView) getView().findViewById(R.id.player_play_pause);
         Object tag = playPause.getTag();
         String extra = null;
