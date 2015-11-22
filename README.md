@@ -6,4 +6,4 @@ The app lets you search for artists, browse albums, and play 30 second samples o
 
 This project used the Spotify Web API.
 
-I used the Picasso, Palette, Otto and Retrofit APS.
+I used the Picasso, Palette, Otto and Retrofit APIs.
